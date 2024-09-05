@@ -1,0 +1,22 @@
+{
+  "name": "com.aceland.states",
+  "displayName": "AceLand States",
+  "version": "1.0.0",
+  "author": {
+    "name": "Parsue - AceLand Workshop",
+    "url": "http://www.parsue.io/"
+  },
+  "unity": "2021.3",
+  "description": "AceLand State Machine is a local supporting services dependency",
+  "keywords": [
+    "aceland",
+    "state machine",
+    "state",
+    "transition"
+  ],
+  "dependencies": {
+    "com.annulusgames.burst-linq": "1.2.0",
+    "com.cysharp.unitask": "2.5.3",
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+  }
+}
