@@ -21,7 +21,7 @@ namespace AceLand.States.Core
         public virtual void StateEnter()
         {
             _updater.Enter();
-            _subStateMachines.ToEntry();
+            _subStateMachines.StartMachine();
         }
 
         public virtual void StateUpdate()
@@ -32,18 +32,18 @@ namespace AceLand.States.Core
         public virtual void StateExit()
         {
             _updater.Exit();
-            _subStateMachines.ToExit();
+            _subStateMachines.StopMachine();
         }
 
         public virtual IState WithSubStateMachine(IStateMachine stateMachine)
         {
-            _subStateMachines.WithSubMachine(stateMachine);
+            _subStateMachines.InjectSubMachine(stateMachine);
             return this;
         }
 
         public virtual IState WithoutSubStateMachine(IStateMachine stateMachine)
         {
-            _subStateMachines.WithOutSubMachine(stateMachine);
+            _subStateMachines.RemoveSubMachine(stateMachine);
             return this;
         }
 

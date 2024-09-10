@@ -2,7 +2,7 @@
 using AceLand.Library.Optional;
 using AceLand.PlayerLoopHack;
 using AceLand.States.Core;
-using AceLand.TasksUtils;
+using AceLand.TaskUtils;
 using UnityEngine.LowLevel;
 
 namespace AceLand.States
@@ -19,33 +19,33 @@ namespace AceLand.States
             _playerLoopSystem = this.CreatePlayerLoopSystem();
         }
 
-        protected override void BeforeDispose()
+        protected override void DisposeManagedResources()
         {
-            StopEngine();
-            base.BeforeDispose();
+            base.DisposeManagedResources();
+            StopMachine();
         }
 
         private readonly PlayerLoopSystem _playerLoopSystem;
         private readonly PlayerLoopType _playerLoopType;
         private readonly int _index;
 
-        public override IStateMachine StartEngine()
+        public override IStateMachine StartMachine()
         {
             if (IsActive) return this;
 
-            base.StartEngine();
+            base.StartMachine();
             _playerLoopSystem.InsertSystem(_playerLoopType, _index);
-            TaskHandler.AddApplicationQuitListener(StopEngine);
+            TaskHandler.AddApplicationQuitListener(StopMachine);
             return this;
         }
 
-        public override void StopEngine()
+        public override void StopMachine()
         {
             if (!IsActive) return;
             
-            base.StopEngine();
+            base.StopMachine();
             _playerLoopSystem.RemoveSystem(_playerLoopType);
-            TaskHandler.RemoveApplicationQuitListener(StopEngine);
+            TaskHandler.RemoveApplicationQuitListener(StopMachine);
         }
 
         public void SystemUpdate()

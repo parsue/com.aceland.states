@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using AceLand.Library.Optional;
 using AceLand.PlayerLoopHack;
 using AceLand.States.Core;
-using AceLand.States.Handler;
+using AceLand.TaskUtils.PromiseAwaiter;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace AceLand.States
 {
@@ -12,9 +14,6 @@ namespace AceLand.States
         private protected StateMachine(Option<string> id, IState[] states, IAnyState entryState,
             List<StateTransition> anyTransitions, List<StateTransition> transitions) :
             base(id, states, entryState, anyTransitions, transitions) { }
-
-        public static StateMachineGetter Get(string id) => new(id);
-        public static StateMachineSystemGetter GetSystem(string id) => new(id);
         
         #region Builder
 

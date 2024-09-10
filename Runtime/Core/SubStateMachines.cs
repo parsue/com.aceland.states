@@ -9,24 +9,24 @@ namespace AceLand.States.Core
 
         private readonly List<IStateMachine> _machines = new();
 
-        public void ToEntry()
+        public void StartMachine()
         {
             foreach (var machine in _machines)
-                machine?.ToEntryState();
+                machine?.StartMachine();
         }
 
-        public void ToExit()
+        public void StopMachine()
         {
             foreach (var machine in _machines)
-                machine?.ToExitState();
+                machine?.StopMachine();
         }
 
-        public void WithSubMachine(IStateMachine machine)
+        public void InjectSubMachine(IStateMachine machine)
         {
             _machines.Add(machine);
         }
 
-        public void WithOutSubMachine(IStateMachine machine)
+        public void RemoveSubMachine(IStateMachine machine)
         {
             if (!_machines.Contains(machine)) return;
             _machines.Remove(machine);

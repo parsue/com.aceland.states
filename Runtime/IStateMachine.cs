@@ -10,32 +10,30 @@ namespace AceLand.States
         IAnyState CurrentState { get; }
         IAnyState ExitState { get; }
         IState GetState(string stateName);
-        void ToExitState();
-        void ToEntryState();
     }
 
     public interface IStateMachine : IAnyStateMachine
     {
         bool IsActive { get; }
         void Dispose();
-        IStateMachine StartEngine();
-        void StopEngine();
+        IStateMachine StartMachine();
+        void StopMachine();
         void Update();
-        void WithAnyTransition(IState toState, Func<bool> argument, bool preventToSelf = true);
-        void WithAnyTransition(IIdleState toState, Func<bool> argument, bool preventToSelf = true);
-        void WithTransition(IState fromState, IState toState, Func<bool> argument, bool preventToSelf = false);
-        void WithTransition(IIdleState fromState, IIdleState toState, Func<bool> argument, bool preventToSelf = false);
-        void WithTransition(IState fromState, IIdleState toState, Func<bool> argument, bool preventToSelf = false);
-        void WithTransition(IIdleState fromState, IState toState, Func<bool> argument, bool preventToSelf = false);
+        void InjectAnyTransition(IState toState, Func<bool> argument, bool preventToSelf = true);
+        void InjectAnyTransition(IIdleState toState, Func<bool> argument, bool preventToSelf = true);
+        void InjectTransition(IState fromState, IState toState, Func<bool> argument, bool preventToSelf = false);
+        void InjectTransition(IIdleState fromState, IIdleState toState, Func<bool> argument, bool preventToSelf = false);
+        void InjectTransition(IState fromState, IIdleState toState, Func<bool> argument, bool preventToSelf = false);
+        void InjectTransition(IIdleState fromState, IState toState, Func<bool> argument, bool preventToSelf = false);
     }
 
     public interface IMonoStateMachine : IAnyStateMachine
     {
-        void WithAnyTransition(IState toState, Func<bool> argument, bool preventToSelf = true);
-        void WithAnyTransition(IIdleState toState, Func<bool> argument, bool preventToSelf = true);
-        void WithTransition(IState fromState, IState toState, Func<bool> argument, bool preventToSelf = false);
-        void WithTransition(IIdleState fromState, IIdleState toState, Func<bool> argument, bool preventToSelf = false);
-        void WithTransition(IState fromState, IIdleState toState, Func<bool> argument, bool preventToSelf = false);
-        void WithTransition(IIdleState fromState, IState toState, Func<bool> argument, bool preventToSelf = false);
+        void InjectAnyTransition(IState toState, Func<bool> argument, bool preventToSelf = true);
+        void InjectAnyTransition(IIdleState toState, Func<bool> argument, bool preventToSelf = true);
+        void InjectTransition(IState fromState, IState toState, Func<bool> argument, bool preventToSelf = false);
+        void InjectTransition(IIdleState fromState, IIdleState toState, Func<bool> argument, bool preventToSelf = false);
+        void InjectTransition(IState fromState, IIdleState toState, Func<bool> argument, bool preventToSelf = false);
+        void InjectTransition(IIdleState fromState, IState toState, Func<bool> argument, bool preventToSelf = false);
     }
 }
