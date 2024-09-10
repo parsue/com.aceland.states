@@ -15,7 +15,6 @@ namespace AceLand.States
 
         public static StateMachineGetter Get(string id) => new(id);
         public static StateMachineSystemGetter GetSystem(string id) => new(id);
-        public static MonoStateMachineGetter GetMono(string id) => new(id);
         
         #region Builder
 
@@ -134,19 +133,19 @@ namespace AceLand.States
 
         #endregion
         
-        public override IStateMachine StartEngine()
+        public override IStateMachine StartMachine()
         {
             if (IsActive) return this;
 
-            base.StartEngine();
+            base.StartMachine();
             return this;
         }
 
-        public override void StopEngine()
+        public override void StopMachine()
         {
             if (!IsActive) return;
             
-            base.StopEngine();
+            base.StopMachine();
         }
     }
 }

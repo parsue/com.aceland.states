@@ -26,7 +26,7 @@ namespace AceLand.States
             this.Register();
         }
 
-        protected override void BeforeDispose()
+        protected override void DisposeManagedResources()
         {
             if (!Id.IsNullOrEmptyOrWhiteSpace()) this.UnRegister();
             CurrentState = null;
@@ -47,8 +47,9 @@ namespace AceLand.States
         private protected readonly List<StateTransition> AnyTransitions = new();
         private protected readonly List<StateTransition> Transitions = new();
         
-        public virtual IStateMachine StartEngine()
+        public virtual IStateMachine StartMachine()
         {
+            ToEntryState();
             IsActive = true;
             if (PrintLogging)
                 Debug.Log($"[{Id}] State Machine Started");
@@ -56,9 +57,10 @@ namespace AceLand.States
             return this;
         }
 
-        public virtual void StopEngine()
+        public virtual void StopMachine()
         {
             IsActive = false;
+            ToExitState();
             if (PrintLogging)
                 Debug.Log($"[{Id}] State Machine Stopped");
         }
@@ -91,36 +93,35 @@ namespace AceLand.States
 
         private void StateUpdate()
         {
+            if (Disposed) return;
+
             CurrentState.StateUpdate();
         }
 
-        public void ToEntryState()
+        private void ToEntryState()
         {
             if (Disposed) return;
 
-            CurrentState.StateExit();
+            CurrentState?.StateExit();
             CurrentState = StartState;
             CurrentState.StateEnter();
-            StartEngine();
-            if (PrintLogging)
-            {
-                var msg = $"[{Id}] State Transition : Entry >> {CurrentState.Name}";
-                Debug.Log(msg);
-            }
+
+            if (!PrintLogging) return;
+            var msg = $"[{Id}] State Transition : Entry >> {CurrentState.Name}";
+            Debug.Log(msg);
         }
 
-        public void ToExitState()
+        private void ToExitState()
         {
             if (Disposed) return;
 
+            var stateName = CurrentState.Name;
             CurrentState.StateExit();
-            if (PrintLogging)
-            {
-                var msg = $"[{Id}] State Transition : {CurrentState.Name} >> Exit";
-                Debug.Log(msg);
-            }
             CurrentState = ExitState;
-            StopEngine();
+
+            if (!PrintLogging) return;
+            var msg = $"[{Id}] State Transition : {stateName} >> Exit";
+            Debug.Log(msg);
         }
 
         public IState GetState(string stateName)
@@ -136,7 +137,7 @@ namespace AceLand.States
             throw new Exception($"Get State Error: name [{stateName}] not found");
         }
 
-        public void WithAnyTransition(IState toState, Func<bool> argument, bool preventToSelf = true)
+        public void InjectAnyTransition(IState toState, Func<bool> argument, bool preventToSelf = true)
         {
             if (Disposed) return;
             
@@ -144,7 +145,7 @@ namespace AceLand.States
             AnyTransitions.Add(StatesHelper.CreateTransition(fromState, toState, argument, preventToSelf));
         }
 
-        public void WithAnyTransition(IIdleState toState, Func<bool> argument, bool preventToSelf = true)
+        public void InjectAnyTransition(IIdleState toState, Func<bool> argument, bool preventToSelf = true)
         {
             if (Disposed) return;
             
@@ -152,23 +153,31 @@ namespace AceLand.States
             AnyTransitions.Add(StatesHelper.CreateTransition(fromState, toState, argument, preventToSelf));
         }
 
-        public void WithTransition(IState fromState, IState toState, Func<bool> argument, bool preventToSelf = false)
+        public void InjectTransition(IState fromState, IState toState, Func<bool> argument, bool preventToSelf = false)
         {
+            if (Disposed) return;
+
             Transitions.Add(StatesHelper.CreateTransition(fromState, toState, argument, preventToSelf));
         }
 
-        public void WithTransition(IIdleState fromState, IIdleState toState, Func<bool> argument, bool preventToSelf = false)
+        public void InjectTransition(IIdleState fromState, IIdleState toState, Func<bool> argument, bool preventToSelf = false)
         {
+            if (Disposed) return;
+
             Transitions.Add(StatesHelper.CreateTransition(fromState, toState, argument, preventToSelf));
         }
 
-        public void WithTransition(IState fromState, IIdleState toState, Func<bool> argument, bool preventToSelf = false)
+        public void InjectTransition(IState fromState, IIdleState toState, Func<bool> argument, bool preventToSelf = false)
         {
+            if (Disposed) return;
+
             Transitions.Add(StatesHelper.CreateTransition(fromState, toState, argument, preventToSelf));
         }
 
-        public void WithTransition(IIdleState fromState, IState toState, Func<bool> argument, bool preventToSelf = false)
+        public void InjectTransition(IIdleState fromState, IState toState, Func<bool> argument, bool preventToSelf = false)
         {
+            if (Disposed) return;
+
             Transitions.Add(StatesHelper.CreateTransition(fromState, toState, argument, preventToSelf));
         }
     }
