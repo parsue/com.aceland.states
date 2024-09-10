@@ -21,26 +21,6 @@ namespace AceLand.States.Core
             machine = stateMachine;
             return true;
         }
-
-        internal static bool TryGetMonoMachine(string id, out MonoStateMachine machine)
-        {
-            machine = null;
-            if (!_machines.TryGetValue(id, out var anyMachine)) return false;
-            if (anyMachine is not MonoStateMachine monoMachine) return false;
-
-            machine = monoMachine;
-            return true;
-        }
-
-        internal static int TryGetMachineSystem(string id, out IStateMachine machine)
-        {
-            machine = null;
-            if (!_machines.TryGetValue(id, out var anyMachine)) return 1;
-            if (anyMachine is not IStateMachine machineSystem) return 2;
-            
-            machine = machineSystem;
-            return 0;
-        }
         
         internal static void Register(this IAnyStateMachine machine)
         {

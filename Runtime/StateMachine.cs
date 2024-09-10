@@ -132,6 +132,26 @@ namespace AceLand.States
         }
 
         #endregion
+
+        #region Getter
+
+        public static Promise<IStateMachine> Get(string id) => GetStateMachine(id);
+
+        private static async UniTask<IStateMachine> GetStateMachine(string id)
+        {
+            var targetTime = Time.realtimeSinceStartup + Settings.getterTimeout;
+
+            while (Time.realtimeSinceStartup < targetTime)
+            {
+                await UniTask.Yield();
+                var arg = StateMachines.TryGetMachine(id, out var stateMachine);
+                if (arg) return stateMachine;
+            }
+
+            throw new Exception($"State Machine [{id}] is not found");
+        }
+
+        #endregion
         
         public override IStateMachine StartMachine()
         {
