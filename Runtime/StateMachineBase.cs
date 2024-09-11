@@ -49,10 +49,11 @@ namespace AceLand.States
         
         public virtual IStateMachine StartMachine()
         {
-            ToEntryState();
-            IsActive = true;
             if (PrintLogging)
                 Debug.Log($"[{Id}] State Machine Started");
+            
+            ToEntryState();
+            IsActive = true;
             
             return this;
         }
@@ -115,8 +116,8 @@ namespace AceLand.States
         {
             if (Disposed) return;
 
-            var stateName = CurrentState.Name;
-            CurrentState.StateExit();
+            var stateName = CurrentState?.Name;
+            CurrentState?.StateExit();
             CurrentState = ExitState;
 
             if (!PrintLogging) return;

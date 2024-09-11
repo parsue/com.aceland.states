@@ -12,15 +12,15 @@ namespace AceLand.States.Core
 
     public interface IState : IAnyState
     {
-        IState WithSubStateMachine(IStateMachine stateMachine);
-        IState WithoutSubStateMachine(IStateMachine stateMachine);
-        IState WithActions(Action enter = null, Action update = null, Action exit = null);
-        IState WithoutActions(Action enter = null, Action update = null, Action exit = null);
+        IState InjectSubStateMachine(IStateMachine stateMachine);
+        IState RemoveSubStateMachine(IStateMachine stateMachine);
+        IState InjectActions(Action enter = null, Action update = null, Action exit = null);
+        IState RemoveActions(Action enter = null, Action update = null, Action exit = null);
     }
 
     public interface IIdleState : IAnyState
     {
-        IIdleState WithActions(Action enter = null, Action exit = null);
-        IIdleState WithoutActions(Action enter = null, Action exit = null);
+        IIdleState InjectActions(Action enter = null, Action exit = null);
+        IIdleState RemoveActions(Action enter = null, Action exit = null);
     }
 }
