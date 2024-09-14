@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AceLand.Library.Optional;
 using AceLand.PlayerLoopHack;
 using AceLand.States.Core;
 using AceLand.TaskUtils.PromiseAwaiter;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace AceLand.States
@@ -136,13 +136,13 @@ namespace AceLand.States
 
         public static Promise<IStateMachine> Get(string id) => GetStateMachine(id);
 
-        private static async UniTask<IStateMachine> GetStateMachine(string id)
+        private static async Task<IStateMachine> GetStateMachine(string id)
         {
             var targetTime = Time.realtimeSinceStartup + Settings.getterTimeout;
 
             while (Time.realtimeSinceStartup < targetTime)
             {
-                await UniTask.Yield();
+                await Task.Yield();
                 var arg = StateMachines.TryGetMachine(id, out var stateMachine);
                 if (arg) return stateMachine;
             }
