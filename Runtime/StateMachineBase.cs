@@ -26,6 +26,8 @@ namespace AceLand.States
             this.Register();
         }
 
+        ~StateMachineBase() => Dispose(false);
+
         protected override void DisposeManagedResources()
         {
             if (!Id.IsNullOrEmptyOrWhiteSpace()) this.UnRegister();

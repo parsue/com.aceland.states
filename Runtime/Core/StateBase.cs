@@ -13,6 +13,8 @@ namespace AceLand.States.Core
             _subStateMachines = subStateMachines;
         }
 
+        ~StateBase() => Dispose(false);
+
         public string Name { get; }
 
         private readonly StateUpdater _updater;
