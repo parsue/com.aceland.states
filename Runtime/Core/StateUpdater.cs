@@ -12,12 +12,14 @@ namespace AceLand.States.Core
         
         private readonly List<StateAction> _actions = new();
         private StateStep _step;
+        private bool _isEntered;
         
         public void Enter()
         {
             _step = StateStep.Enter;
             foreach (var action in _actions)
                 action?.Enter();
+            _isEntered = true;
         }
         
         public void Update()
@@ -32,12 +34,13 @@ namespace AceLand.States.Core
             _step = StateStep.Exit;
             foreach (var action in _actions)
                 action?.Exit();
+            _isEntered = false;
         }
 
         public void WithActions(Action enter = null, Action update = null, Action exit = null)
         {
             _actions.Add(StatesHelper.CreateStateUpdater(enter, update, exit));
-            if (_step is StateStep.Update)
+            if (_isEntered && Step is not StateStep.Exit)
                 enter?.Invoke();
         }
 
