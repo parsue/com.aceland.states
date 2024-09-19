@@ -37,14 +37,14 @@ namespace AceLand.States.Core
             _isEntered = false;
         }
 
-        public void WithActions(Action enter = null, Action update = null, Action exit = null)
+        public void InjectActions(Action enter = null, Action update = null, Action exit = null)
         {
             _actions.Add(StatesHelper.CreateStateUpdater(enter, update, exit));
-            if (_isEntered && Step is not StateStep.Exit)
+            if (_isEntered && _step is not StateStep.Exit)
                 enter?.Invoke();
         }
 
-        public void WithoutActions(Action enter = null, Action update = null, Action exit = null)
+        public void RemoveActions(Action enter = null, Action update = null, Action exit = null)
         {
             var emptyActions = new List<int>();
             for (var i = _actions.Count - 1; i >= 0; i--)

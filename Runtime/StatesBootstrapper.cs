@@ -10,9 +10,9 @@ namespace AceLand.States
         private static void Initialization()
         {
             StatesHelper.Settings = Resources.Load<StatesSettings>(nameof(StatesSettings));
-            StatesHelper.AnyState = AnyState.Builder().Build();
-            StatesHelper.EntryState = AnyState.Builder().Build();
-            StatesHelper.ExitState = AnyState.Builder().Build();
+            StatesHelper.AnyState = AnyState.Builder().WithName("Any State").Build();
+            StatesHelper.EntryState = AnyState.Builder().WithName("Entry State").Build();
+            StatesHelper.ExitState = AnyState.Builder().WithName("Exit State").Build();
         }
     }
 }

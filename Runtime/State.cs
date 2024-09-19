@@ -17,6 +17,7 @@ namespace AceLand.States
         public interface IStateBuilder
         {
             IStateBuilder WithName(string name);
+            IStateBuilder WithName<T>(T name) where T : Enum;
             IStateBuilder WithActions(Action enter = null, Action update = null, Action exit = null);
             IStateBuilder WithMachines(params IStateMachine[] machines);
             IState Build();
@@ -38,6 +39,12 @@ namespace AceLand.States
             public IStateBuilder WithName(string name)
             {
                 _name = name;
+                return this;
+            }
+
+            public IStateBuilder WithName<T>(T name) where T : Enum
+            {
+                _name = name.ToString();
                 return this;
             }
 

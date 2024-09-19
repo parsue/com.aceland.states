@@ -1,4 +1,5 @@
 ﻿using System;
+using AceLand.Library.Optional;
 
 namespace AceLand.States.Core
 {
@@ -16,14 +17,22 @@ namespace AceLand.States.Core
         internal interface IStateBuilder
         {
             IAnyState Build();
+            IStateBuilder WithName(string name);
         }
         
         private class StateBuilder : IStateBuilder
         {
+            private Option<string> _name = Option<string>.None();
             public IAnyState Build()
             {
-                var name = Guid.NewGuid().ToString();
+                var name = _name.Reduce(Guid.NewGuid().ToString());
                 return new AnyState(name);
+            }
+            
+            public IStateBuilder WithName(string name)
+            {
+                _name = name.ToOption();
+                return this;
             }
         }
 
@@ -44,5 +53,8 @@ namespace AceLand.States.Core
         {
             //noop
         }
+
+        public bool CompareTo(IAnyState other) =>
+            other is not null && ReferenceEquals(this, other) && Name == other.Name;
     }
 }

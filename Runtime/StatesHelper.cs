@@ -28,9 +28,9 @@ namespace AceLand.States
             return new StateAction(enter, update, exit);
         }
         
-        internal static StateTransition CreateTransition(IAnyState fromState, IAnyState toState, Func<bool> argument, bool preventToSelf)
+        internal static StateTransition CreateTransition(IAnyState fromState, IAnyState toState, Func<bool> argument, bool preventToSelf = true)
         {
-            return new(fromState, toState, argument, preventToSelf);
+            return new StateTransition(fromState, toState, argument, preventToSelf);
         }
 
         internal static bool IsStateTransition(this IStateMachine machine,
@@ -45,30 +45,6 @@ namespace AceLand.States
                 return true;
             }
 
-            foreach (var transition in transitions)
-            {
-                if (!transition.IsNextState(currentState, out nextState)) continue;
-                isAny = false;
-                return true;
-            }
-
-            nextState = null;
-            isAny = false;
-            return false;
-        }
-
-        internal static bool IsStateTransition(this IMonoStateMachine machine,
-            in List<StateTransition> anyTransitions, in List<StateTransition> transitions,
-            out IAnyState nextState, out bool isAny)
-        {
-            var currentState = machine.CurrentState;
-            foreach (var transition in anyTransitions)
-            {
-                if (!transition.IsNextState(currentState, out nextState)) continue;
-                isAny = true;
-                return true;
-            }
-            
             foreach (var transition in transitions)
             {
                 if (!transition.IsNextState(currentState, out nextState)) continue;
@@ -102,13 +78,7 @@ namespace AceLand.States
         internal static void PrintEntryState(this IStateMachine machine)
         {
             var entry = machine.EntryState;
-            if (PrintLogging && !entry.Name.IsNullOrEmptyOrWhiteSpace())
-                Debug.Log($"[{machine.Id}] State Entry : {entry.Name}");
-        }
-
-        internal static void PrintEntryState(this IMonoStateMachine machine)
-        {
-            var entry = machine.EntryState;
+            
             if (PrintLogging && !entry.Name.IsNullOrEmptyOrWhiteSpace())
                 Debug.Log($"[{machine.Id}] State Entry : {entry.Name}");
         }
@@ -120,17 +90,8 @@ namespace AceLand.States
             
             var fromName = GetStateName(current);
             var toName = GetStateName(next);
-            var msg = $"[{machine.Id}] State Transition{(isAny ? " [Any]" : "")} : {fromName} >> {toName}";
-            Debug.Log(msg);
-        }
 
-        internal static void PrintStateTransitionLog(this IMonoStateMachine machine, IAnyState next, bool isAny)
-        {
-            var current = machine.CurrentState;
-            if (!PrintLogging || current.Name.IsNullOrEmptyOrWhiteSpace()) return;
-            
-            var fromName = GetStateName(current);
-            var toName = GetStateName(next);
+            if (!Settings.PrintLogging()) return;
             var msg = $"[{machine.Id}] State Transition{(isAny ? " [Any]" : "")} : {fromName} >> {toName}";
             Debug.Log(msg);
         }

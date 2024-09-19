@@ -9,10 +9,10 @@ namespace AceLand.States
 {
     public sealed class StateMachineSystem : StateMachine, IPlayerLoopSystem
     {
-        internal StateMachineSystem(Option<string> id, IState[] states, IAnyState entryState,
+        internal StateMachineSystem(Option<string> id, IState[] states, IAnyState firstState,
             List<StateTransition> anyTransitions, List<StateTransition> transitions,
             PlayerLoopType playerLoopType, int index) :
-            base(id, states, entryState, anyTransitions, transitions)
+            base(id, states, firstState, anyTransitions, transitions)
         {
             _playerLoopType = playerLoopType;
             _index = index;
@@ -22,30 +22,30 @@ namespace AceLand.States
         protected override void DisposeManagedResources()
         {
             base.DisposeManagedResources();
-            StopMachine();
+            Stop();
         }
 
         private readonly PlayerLoopSystem _playerLoopSystem;
         private readonly PlayerLoopType _playerLoopType;
         private readonly int _index;
 
-        public override IStateMachine StartMachine()
+        public override IStateMachine Start()
         {
             if (IsActive) return this;
 
-            base.StartMachine();
+            base.Start();
             _playerLoopSystem.InsertSystem(_playerLoopType, _index);
-            TaskHandler.AddApplicationQuitListener(StopMachine);
+            TaskHandler.AddApplicationQuitListener(Stop);
             return this;
         }
 
-        public override void StopMachine()
+        public override void Stop()
         {
             if (!IsActive) return;
             
-            base.StopMachine();
+            base.Stop();
             _playerLoopSystem.RemoveSystem(_playerLoopType);
-            TaskHandler.RemoveApplicationQuitListener(StopMachine);
+            TaskHandler.RemoveApplicationQuitListener(Stop);
         }
 
         public void SystemUpdate()

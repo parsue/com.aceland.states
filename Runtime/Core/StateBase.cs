@@ -51,14 +51,17 @@ namespace AceLand.States.Core
 
         public virtual IState InjectActions(Action enter = null, Action update = null, Action exit = null)
         {
-            _updater.WithActions(enter, update, exit);
+            _updater.InjectActions(enter, update, exit);
             return this;
         }
 
         public virtual IState RemoveActions(Action enter = null, Action update = null, Action exit = null)
         {
-            _updater.WithoutActions(enter, update, exit);
+            _updater.RemoveActions(enter, update, exit);
             return this;
         }
+
+        public bool CompareTo(IAnyState other) =>
+            other is not null && ReferenceEquals(this, other) && Name == other.Name;
     }
 }

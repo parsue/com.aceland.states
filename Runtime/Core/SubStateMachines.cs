@@ -12,13 +12,13 @@ namespace AceLand.States.Core
         public void StartMachine()
         {
             foreach (var machine in _machines)
-                machine?.StartMachine();
+                machine?.Start();
         }
 
         public void StopMachine()
         {
             foreach (var machine in _machines)
-                machine?.StopMachine();
+                machine?.Stop();
         }
 
         public void InjectSubMachine(IStateMachine machine)

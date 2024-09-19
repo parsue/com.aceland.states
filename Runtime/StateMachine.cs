@@ -11,9 +11,9 @@ namespace AceLand.States
 {
     public class StateMachine : StateMachineBase
     {
-        private protected StateMachine(Option<string> id, IState[] states, IAnyState entryState,
+        private protected StateMachine(Option<string> id, IState[] states, IAnyState firstState,
             List<StateTransition> anyTransitions, List<StateTransition> transitions) :
-            base(id, states, entryState, anyTransitions, transitions) { }
+            base(id, states, firstState, anyTransitions, transitions) { }
         
         #region Builder
 
@@ -34,12 +34,9 @@ namespace AceLand.States
             IStateMachineBuilder WithExitTransition(IState fromState, Func<bool> argument);
             IStateMachineBuilder WithAnyExitTransition(Func<bool> argument);
             IStateMachineBuilder WithAnyTransition(IState toState, Func<bool> argument, bool preventToSelf = true);
-            IStateMachineBuilder WithAnyTransition(IIdleState toState, Func<bool> argument, bool preventToSelf = true);
             IStateMachineBuilder WithTransition(IState fromState, IState toState, Func<bool> argument, bool preventToSelf = true);
-            IStateMachineBuilder WithTransition(IIdleState fromState, IIdleState toState, Func<bool> argument, bool preventToSelf = true);
-            IStateMachineBuilder WithTransition(IState fromState, IIdleState toState, Func<bool> argument, bool preventToSelf = true);
-            IStateMachineBuilder WithTransition(IIdleState fromState, IState toState, Func<bool> argument, bool preventToSelf = true);
             IStateMachineBuilder WithId(string id);
+            IStateMachineBuilder WithId<T>(T id) where T : Enum;
             IStateMachine Build();
             IStateMachine BuildAsSystem(PlayerLoopType playerLoopType, int index = 0);
         }
@@ -49,14 +46,14 @@ namespace AceLand.States
             private IState[] _states;
             private readonly List<StateTransition> _anyTransitions = new();
             private readonly List<StateTransition> _transitions = new();
-            private IAnyState _entryState;
+            private IAnyState _firstState;
             private string _id;
 
             public IStateMachine Build() => 
-                new StateMachine(_id.ToOption(), _states, _entryState, _anyTransitions, _transitions);
+                new StateMachine(_id.ToOption(), _states, _firstState, _anyTransitions, _transitions);
             
             public IStateMachine BuildAsSystem(PlayerLoopType playerLoopType, int index = 0) =>
-                new StateMachineSystem(_id.ToOption(), _states, _entryState, _anyTransitions, _transitions, playerLoopType, index);
+                new StateMachineSystem(_id.ToOption(), _states, _firstState, _anyTransitions, _transitions, playerLoopType, index);
 
             public IEntryTransitionBuilder WithStates(IState[] states)
             {
@@ -66,7 +63,7 @@ namespace AceLand.States
             
             public IStateMachineBuilder WithEntryTransition(IState toState)
             {
-                _entryState = toState;
+                _firstState = toState;
                 return this;
             }
 
@@ -128,6 +125,12 @@ namespace AceLand.States
                 _id = id;
                 return this;
             }
+
+            public IStateMachineBuilder WithId<T>(T id) where T : Enum
+            {
+                _id = id.ToString();
+                return this;
+            }
         }
 
         #endregion
@@ -135,6 +138,7 @@ namespace AceLand.States
         #region Getter
 
         public static Promise<IStateMachine> Get(string id) => GetStateMachine(id);
+        public static Promise<IStateMachine> Get<T>(T id) where T : Enum => GetStateMachine(id.ToString());
 
         private static async Task<IStateMachine> GetStateMachine(string id)
         {
@@ -152,19 +156,19 @@ namespace AceLand.States
 
         #endregion
         
-        public override IStateMachine StartMachine()
+        public override IStateMachine Start()
         {
             if (IsActive) return this;
 
-            base.StartMachine();
+            base.Start();
             return this;
         }
 
-        public override void StopMachine()
+        public override void Stop()
         {
             if (!IsActive) return;
             
-            base.StopMachine();
+            base.Stop();
         }
     }
 }

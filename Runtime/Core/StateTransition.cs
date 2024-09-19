@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace AceLand.States.Core
 {
@@ -6,38 +7,38 @@ namespace AceLand.States.Core
     {
         internal StateTransition(IAnyState from, IAnyState to, Func<bool> argument, bool preventToSelf)
         {
-            From = from;
-            To = to;
-            Argument = argument;
-            PreventToSelf = preventToSelf;
+            _from = from;
+            _to = to;
+            _argument = argument;
+            _preventToSelf = preventToSelf;
         }
 
-        public IAnyState From { get; }
-        public IAnyState To { get; }
-        private Func<bool> Argument { get; }
-        private bool PreventToSelf { get; }
+        private readonly IAnyState _from;
+        private readonly IAnyState _to;
+        private readonly Func<bool> _argument;
+        private readonly bool _preventToSelf;
 
         internal bool IsNextState(IAnyState currentState, out IAnyState nextAnyState)
         {
             nextAnyState = null;
-            if (From is not AnyState && currentState != From) return false;
-            if (PreventToSelf && currentState == To) return false;
-            if (!Argument.Invoke()) return false;
+            if (_from != StatesHelper.AnyState && !currentState.CompareTo(_from)) return false;
+            if (_preventToSelf && currentState.CompareTo(_to)) return false;
+            if (!_argument.Invoke()) return false;
             
-            nextAnyState = To;
+            nextAnyState = _to;
             return true;
         }
 
         internal bool TryGetState(string name, out IAnyState anyState)
         {
-            if (From.Name == name)
+            if (_from.Name == name)
             {
-                anyState = From;
+                anyState = _from;
                 return true;
             }
-            if (To.Name == name)
+            if (_to.Name == name)
             {
-                anyState = To;
+                anyState = _to;
                 return true;
             }
 

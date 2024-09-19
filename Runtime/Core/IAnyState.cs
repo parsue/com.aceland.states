@@ -8,6 +8,7 @@ namespace AceLand.States.Core
         void StateEnter();
         void StateUpdate();
         void StateExit();
+        bool CompareTo(IAnyState other);
     }
 
     public interface IState : IAnyState
