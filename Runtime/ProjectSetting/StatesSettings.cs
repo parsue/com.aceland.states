@@ -22,8 +22,9 @@ namespace AceLand.States.ProjectSetting
             if (!enableLogging) return false;
 #if UNITY_EDITOR
             return loggingOnEditor;
-#endif
+#else
             return loggingOnBuild;
+#endif
         }
     }
 }

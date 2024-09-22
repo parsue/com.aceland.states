@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AceLand.Library.Optional;
 using AceLand.PlayerLoopHack;
 using AceLand.States.Core;
+using AceLand.TaskUtils;
 using AceLand.TaskUtils.PromiseAwaiter;
 using UnityEngine;
 
@@ -142,12 +143,15 @@ namespace AceLand.States
 
         private static async Task<IStateMachine> GetStateMachine(string id)
         {
+            var aliveToken = TaskHelper.ApplicationAliveToken;
             var targetTime = Time.realtimeSinceStartup + Settings.getterTimeout;
 
-            while (Time.realtimeSinceStartup < targetTime)
+            while (!aliveToken.IsCancellationRequested && Time.realtimeSinceStartup < targetTime)
             {
                 await Task.Yield();
+                
                 var arg = StateMachines.TryGetMachine(id, out var stateMachine);
+                
                 if (arg) return stateMachine;
             }
 
