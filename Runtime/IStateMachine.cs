@@ -10,6 +10,7 @@ namespace AceLand.States
         IAnyState ExitState { get; }
         IAnyState StartState { get; }
         IState GetState(string stateName);
+        IState GetState<T>(T stateName) where T : Enum;
     }
 
     public interface IStateMachine : IAnyStateMachine
