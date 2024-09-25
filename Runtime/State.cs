@@ -70,6 +70,7 @@ namespace AceLand.States
         public interface IStateNamesBuilders
         {
             IStateBuilders WithNames(params string[] name);
+            IStateBuilders WithNames<TEnum>();
         }
 
         public interface IStateBuilders
@@ -100,6 +101,9 @@ namespace AceLand.States
                 _names = names;
                 return this;
             }
+
+            public IStateBuilders WithNames<TEnum>() =>
+                WithNames(Enum.GetNames(typeof(TEnum)));
         }
 
         #endregion
