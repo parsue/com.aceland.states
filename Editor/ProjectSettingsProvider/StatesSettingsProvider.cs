@@ -13,6 +13,9 @@ namespace AceLand.States.Editor.ProjectSettingsProvider
         private StatesSettingsProvider(string path, SettingsScope scope = SettingsScope.User) 
             : base(path, scope) { }
         
+        [InitializeOnLoadMethod]
+        public static void CreateSettings() => StatesSettings.GetSerializedSettings();
+        
         public override void OnActivate(string searchContext, VisualElement rootElement)
         {
             _settings = StatesSettings.GetSerializedSettings();
