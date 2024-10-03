@@ -11,12 +11,12 @@ namespace AceLand.States.Core
             => _actions.AddRange(actions);
         
         private readonly List<StateAction> _actions = new();
-        private StateStep _step;
+        internal StateStep Step { get; private set; }
         private bool _isEntered;
         
         public void Enter()
         {
-            _step = StateStep.Enter;
+            Step = StateStep.Enter;
             foreach (var action in _actions)
                 action?.Enter();
             _isEntered = true;
@@ -24,14 +24,15 @@ namespace AceLand.States.Core
         
         public void Update()
         {
-            _step = StateStep.Update;
+            if (Step is not StateStep.Update)
+                Step = StateStep.Update;
             foreach (var action in _actions)
                 action?.Update();
         }
 
         public void Exit()
         {
-            _step = StateStep.Exit;
+            Step = StateStep.Exit;
             foreach (var action in _actions)
                 action?.Exit();
             _isEntered = false;
@@ -40,7 +41,7 @@ namespace AceLand.States.Core
         public void InjectActions(Action enter = null, Action update = null, Action exit = null)
         {
             _actions.Add(StatesHelper.CreateStateUpdater(enter, update, exit));
-            if (_isEntered && _step is not StateStep.Exit)
+            if (_isEntered && Step is not StateStep.Exit)
                 enter?.Invoke();
         }
 

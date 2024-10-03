@@ -8,27 +8,35 @@ namespace AceLand.States.Core
         internal SubStateMachines(List<IStateMachine> machines) => _machines.AddRange(machines);
 
         private readonly List<IStateMachine> _machines = new();
+        private bool _isEntered;
 
         public void StartMachine()
         {
             foreach (var machine in _machines)
                 machine?.Start();
+            
+            _isEntered = true;
         }
 
         public void StopMachine()
         {
             foreach (var machine in _machines)
                 machine?.Stop();
+            
+            _isEntered = false;
         }
 
         public void InjectSubMachine(IStateMachine machine)
         {
             _machines.Add(machine);
+            if (_isEntered) machine.Start();
         }
 
         public void RemoveSubMachine(IStateMachine machine)
         {
             if (!_machines.Contains(machine)) return;
+            
+            machine.Stop();
             _machines.Remove(machine);
         }
     }
