@@ -21,7 +21,7 @@ namespace AceLand.States.Core
         internal bool IsNextState(IAnyState currentState, out IAnyState nextAnyState)
         {
             nextAnyState = null;
-            if (_from != StatesHelper.AnyState && !currentState.CompareTo(_from)) return false;
+            if (_from != StatesUtils.AnyState && !currentState.CompareTo(_from)) return false;
             if (_preventToSelf && currentState.CompareTo(_to)) return false;
             if (!_argument.Invoke()) return false;
             

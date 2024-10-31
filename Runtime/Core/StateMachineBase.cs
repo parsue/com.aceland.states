@@ -15,10 +15,10 @@ namespace AceLand.States.Core
         {
             Id = id.Reduce(Guid.NewGuid().ToString());
             States = states;
-            EntryState = StatesHelper.EntryState;
-            ExitState = StatesHelper.ExitState;
+            EntryState = StatesUtils.EntryState;
+            ExitState = StatesUtils.ExitState;
             StartState = firstState;
-            _transitions.Add(StatesHelper.CreateTransition(EntryState, StartState, () => IsActive));
+            _transitions.Add(StatesUtils.CreateTransition(EntryState, StartState, () => IsActive));
             
             _anyTransitions.AddRange(anyTransitions);
             _transitions.AddRange(transitions);
@@ -43,7 +43,7 @@ namespace AceLand.States.Core
         public IAnyState StartState { get; }
         public IAnyState CurrentState { get; private set; }
         
-        private protected static StatesSettings Settings => StatesHelper.Settings;
+        private protected static StatesSettings Settings => StatesUtils.Settings;
         private static bool PrintLogging => Settings.PrintLogging();
 
         private IState[] States { get; }

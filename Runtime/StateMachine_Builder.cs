@@ -60,54 +60,54 @@ namespace AceLand.States
 
             public IStateMachineBuilder WithExitTransition(IState fromState, Func<bool> argument)
             {
-                var toState = StatesHelper.ExitState;
-                _anyTransitions.Add(StatesHelper.CreateTransition(fromState, toState, argument, true));
+                var toState = StatesUtils.ExitState;
+                _anyTransitions.Add(StatesUtils.CreateTransition(fromState, toState, argument, true));
                 return this;
             }
 
             public IStateMachineBuilder WithAnyExitTransition(Func<bool> argument)
             {
-                var fromState = StatesHelper.AnyState;
-                var toState = StatesHelper.ExitState;
-                _anyTransitions.Add(StatesHelper.CreateTransition(fromState, toState, argument, true));
+                var fromState = StatesUtils.AnyState;
+                var toState = StatesUtils.ExitState;
+                _anyTransitions.Add(StatesUtils.CreateTransition(fromState, toState, argument, true));
                 return this;
             }
             
             public IStateMachineBuilder WithAnyTransition(IState toState, Func<bool> argument, bool preventToSelf = true)
             {
-                var fromState = StatesHelper.AnyState;
-                _anyTransitions.Add(StatesHelper.CreateTransition(fromState, toState, argument, preventToSelf));
+                var fromState = StatesUtils.AnyState;
+                _anyTransitions.Add(StatesUtils.CreateTransition(fromState, toState, argument, preventToSelf));
                 return this;
             }
 
             public IStateMachineBuilder WithAnyTransition(IIdleState toState, Func<bool> argument, bool preventToSelf = true)
             {
-                var fromState = StatesHelper.AnyState;
-                _anyTransitions.Add(StatesHelper.CreateTransition(fromState, toState, argument, preventToSelf));
+                var fromState = StatesUtils.AnyState;
+                _anyTransitions.Add(StatesUtils.CreateTransition(fromState, toState, argument, preventToSelf));
                 return this;
             }
 
             public IStateMachineBuilder WithTransition(IState fromState, IState toState, Func<bool> argument, bool preventToSelf = true)
             {
-                _transitions.Add(StatesHelper.CreateTransition(fromState, toState, argument, preventToSelf));
+                _transitions.Add(StatesUtils.CreateTransition(fromState, toState, argument, preventToSelf));
                 return this;
             }
 
             public IStateMachineBuilder WithTransition(IIdleState fromState, IIdleState toState, Func<bool> argument, bool preventToSelf = true)
             {
-                _transitions.Add(StatesHelper.CreateTransition(fromState, toState, argument, preventToSelf));
+                _transitions.Add(StatesUtils.CreateTransition(fromState, toState, argument, preventToSelf));
                 return this;
             }
 
             public IStateMachineBuilder WithTransition(IState fromState, IIdleState toState, Func<bool> argument, bool preventToSelf = true)
             {
-                _transitions.Add(StatesHelper.CreateTransition(fromState, toState, argument, preventToSelf));
+                _transitions.Add(StatesUtils.CreateTransition(fromState, toState, argument, preventToSelf));
                 return this;
             }
 
             public IStateMachineBuilder WithTransition(IIdleState fromState, IState toState, Func<bool> argument, bool preventToSelf = true)
             {
-                _transitions.Add(StatesHelper.CreateTransition(fromState, toState, argument, preventToSelf));
+                _transitions.Add(StatesUtils.CreateTransition(fromState, toState, argument, preventToSelf));
                 return this;
             }
 

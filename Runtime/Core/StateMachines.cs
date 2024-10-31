@@ -7,7 +7,7 @@ namespace AceLand.States.Core
 {
     internal static class StateMachines
     {
-        private static StatesSettings Settings => StatesHelper.Settings;
+        private static StatesSettings Settings => StatesUtils.Settings;
         private static readonly Dictionary<string, IAnyStateMachine> Machines = new();
 
         internal static bool TryGetMachine(string id, out IStateMachine machine)

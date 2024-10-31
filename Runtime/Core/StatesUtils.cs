@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Reflection;
 using AceLand.Library.Extensions;
-using AceLand.States.Core;
 using AceLand.States.ProjectSetting;
 using UnityEngine;
 
-namespace AceLand.States
+namespace AceLand.States.Core
 {
-    public static class StatesHelper
+    internal static class StatesUtils
     {
         public static StatesSettings Settings
         {
@@ -17,23 +16,25 @@ namespace AceLand.States
                 : Resources.Load<StatesSettings>(nameof(StatesSettings));
             internal set => _settings = value;
         }
-        internal static IAnyState AnyState;
-        internal static IAnyState EntryState;
-        internal static IAnyState ExitState;
+        
         private static StatesSettings _settings;
         private static bool PrintLogging => Settings.PrintLogging();
         
-        internal static StateAction CreateStateUpdater(Action enter = null, Action update = null, Action exit = null)
+        public static IAnyState AnyState;
+        public static IAnyState EntryState;
+        public static IAnyState ExitState;
+        
+        public static StateAction CreateStateUpdater(Action enter = null, Action update = null, Action exit = null)
         {
             return new StateAction(enter, update, exit);
         }
         
-        internal static StateTransition CreateTransition(IAnyState fromState, IAnyState toState, Func<bool> argument, bool preventToSelf = true)
+        public static StateTransition CreateTransition(IAnyState fromState, IAnyState toState, Func<bool> argument, bool preventToSelf = true)
         {
             return new StateTransition(fromState, toState, argument, preventToSelf);
         }
 
-        internal static bool IsStateTransition(this IStateMachine machine,
+        public static bool IsStateTransition(this IStateMachine machine,
             IEnumerable<StateTransition> anyTransitions, IEnumerable<StateTransition> transitions,
             out IAnyState nextState, out bool isAny)
         {
@@ -57,7 +58,7 @@ namespace AceLand.States
             return false;
         }
 
-        internal static Func<bool> GetArgument(string funcName, ReadOnlySpan<MethodInfo> argMethodInfo)
+        public static Func<bool> GetArgument(string funcName, ReadOnlySpan<MethodInfo> argMethodInfo)
         {
             if (funcName.IsNullOrEmptyOrWhiteSpace()) return null;
             if (argMethodInfo.Length == 0) return null;
@@ -75,7 +76,7 @@ namespace AceLand.States
             throw new Exception($"Get Argument error: [{funcName}] is not found");
         }
 
-        internal static void PrintEntryState(this IStateMachine machine)
+        public static void PrintEntryState(this IStateMachine machine)
         {
             var entry = machine.EntryState;
             
@@ -83,7 +84,7 @@ namespace AceLand.States
                 Debug.Log($"[{machine.Id}] State Entry : {entry.Name}");
         }
 
-        internal static void PrintStateTransitionLog(this IStateMachine machine, IAnyState next, bool isAny)
+        public static void PrintStateTransitionLog(this IStateMachine machine, IAnyState next, bool isAny)
         {
             var current = machine.CurrentState;
             if (!PrintLogging || current.Name.IsNullOrEmptyOrWhiteSpace()) return;

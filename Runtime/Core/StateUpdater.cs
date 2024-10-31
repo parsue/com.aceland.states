@@ -40,7 +40,7 @@ namespace AceLand.States.Core
 
         public void InjectActions(Action enter = null, Action update = null, Action exit = null)
         {
-            _actions.Add(StatesHelper.CreateStateUpdater(enter, update, exit));
+            _actions.Add(StatesUtils.CreateStateUpdater(enter, update, exit));
             if (_isEntered && Step is not StateStep.Exit)
                 enter?.Invoke();
         }

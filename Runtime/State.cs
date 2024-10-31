@@ -50,7 +50,7 @@ namespace AceLand.States
 
             public IStateBuilder WithActions(Action enter = null, Action update = null, Action exit = null)
             {
-                _actions.Add(StatesHelper.CreateStateUpdater(enter, update, exit));
+                _actions.Add(StatesUtils.CreateStateUpdater(enter, update, exit));
                 return this;
             }
 
