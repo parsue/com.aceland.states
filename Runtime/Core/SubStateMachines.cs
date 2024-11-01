@@ -29,7 +29,8 @@ namespace AceLand.States.Core
         public void InjectSubMachine(IStateMachine machine)
         {
             _machines.Add(machine);
-            if (_isEntered) machine.Start();
+            if (StatesUtils.Settings.InvokeEnterOnLateWith && _isEntered)
+                machine.Start();
         }
 
         public void RemoveSubMachine(IStateMachine machine)

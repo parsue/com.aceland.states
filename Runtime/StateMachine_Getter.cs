@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using AceLand.Library.Optional;
-using AceLand.PlayerLoopHack;
 using AceLand.States.Core;
 using AceLand.TaskUtils;
 using AceLand.TaskUtils.PromiseAwaiter;
@@ -18,7 +15,7 @@ namespace AceLand.States
         private static async Task<IStateMachine> GetStateMachine(string id)
         {
             var aliveToken = TaskHelper.ApplicationAliveToken;
-            var targetTime = Time.realtimeSinceStartup + Settings.getterTimeout;
+            var targetTime = Time.realtimeSinceStartup + Settings.GetterTimeout;
 
             while (!aliveToken.IsCancellationRequested && Time.realtimeSinceStartup < targetTime)
             {
