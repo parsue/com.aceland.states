@@ -35,7 +35,7 @@ namespace AceLand.States
 
             base.Start();
             _playerLoopSystem.InsertSystem(_playerLoopType, _index);
-            TaskHelper.AddApplicationQuitListener(Stop);
+            Promise.AddApplicationQuitListener(Stop);
             return this;
         }
 
@@ -45,7 +45,7 @@ namespace AceLand.States
             
             base.Stop();
             _playerLoopSystem.RemoveSystem(_playerLoopType);
-            TaskHelper.RemoveApplicationQuitListener(Stop);
+            Promise.RemoveApplicationQuitListener(Stop);
         }
 
         public void SystemUpdate()

@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using AceLand.States.Core;
 using AceLand.TaskUtils;
-using AceLand.TaskUtils.PromiseAwaiter;
 using UnityEngine;
 
 namespace AceLand.States
@@ -14,7 +13,7 @@ namespace AceLand.States
 
         private static async Task<IStateMachine> GetStateMachine(string id)
         {
-            var aliveToken = TaskHelper.ApplicationAliveToken;
+            var aliveToken = Promise.ApplicationAliveToken;
             var targetTime = Time.realtimeSinceStartup + Settings.GetterTimeout;
 
             while (!aliveToken.IsCancellationRequested && Time.realtimeSinceStartup < targetTime)

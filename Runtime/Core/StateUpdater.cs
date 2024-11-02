@@ -41,7 +41,7 @@ namespace AceLand.States.Core
         public void InjectActions(Action enter = null, Action update = null, Action exit = null)
         {
             _actions.Add(StatesUtils.CreateStateUpdater(enter, update, exit));
-            if (StatesUtils.Settings.InvokeEnterOnLateWith && _isEntered && Step is not StateStep.Exit)
+            if (StatesUtils.Settings.InvokeEnterOnLateInject && _isEntered && Step is not StateStep.Exit)
                 enter?.Invoke();
         }
 

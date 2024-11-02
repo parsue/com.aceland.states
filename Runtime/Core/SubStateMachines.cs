@@ -29,7 +29,7 @@ namespace AceLand.States.Core
         public void InjectSubMachine(IStateMachine machine)
         {
             _machines.Add(machine);
-            if (StatesUtils.Settings.InvokeEnterOnLateWith && _isEntered)
+            if (StatesUtils.Settings.InvokeEnterOnLateInject && _isEntered)
                 machine.Start();
         }
 

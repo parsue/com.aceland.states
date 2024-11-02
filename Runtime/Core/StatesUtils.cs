@@ -11,9 +11,11 @@ namespace AceLand.States.Core
     {
         public static StatesSettings Settings
         {
-            get => Application.isPlaying
-                ? _settings
-                : Resources.Load<StatesSettings>(nameof(StatesSettings));
+            get
+            {
+                _settings ??= Resources.Load<StatesSettings>(nameof(StatesSettings));
+                return _settings;
+            }
             internal set => _settings = value;
         }
         

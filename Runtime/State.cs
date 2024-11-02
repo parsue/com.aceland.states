@@ -1,111 +1,68 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AceLand.Library.Disposable;
 using AceLand.Library.Optional;
+using System;
 using AceLand.States.Core;
 
 namespace AceLand.States
 {
-    public sealed class State : StateBase
+    public sealed partial class State : DisposableObject, IState
     {
-        private State(Option<string> name, StateUpdater updater, SubStateMachines subStateMachines) : 
-            base(name, updater, subStateMachines) { }
-
-        #region Builder
-        
-        public static IStateBuilder Builder() => new StateBuilder();
-
-        public interface IStateBuilder
+        private State(Option<string> name, StateUpdater updater, SubStateMachines subStateMachines)
         {
-            IStateBuilder WithName(string name);
-            IStateBuilder WithName<T>(T name) where T : Enum;
-            IStateBuilder WithActions(Action enter = null, Action update = null, Action exit = null);
-            IStateBuilder WithMachines(params IStateMachine[] machines);
-            IState Build();
-        }
-        
-        private class StateBuilder : IStateBuilder
-        {
-            private string _name = string.Empty;
-            private readonly List<StateAction> _actions = new();
-            private readonly List<IStateMachine> _machines = new();
-
-            public IState Build()
-            {
-                var updater = new StateUpdater(_actions);
-                var subStateMachines = new SubStateMachines(_machines);
-                return new State(_name.ToOption(), updater, subStateMachines);
-            }
-            
-            public IStateBuilder WithName(string name)
-            {
-                _name = name;
-                return this;
-            }
-
-            public IStateBuilder WithName<T>(T name) where T : Enum
-            {
-                _name = name.ToString();
-                return this;
-            }
-
-            public IStateBuilder WithActions(Action enter = null, Action update = null, Action exit = null)
-            {
-                _actions.Add(StatesUtils.CreateStateUpdater(enter, update, exit));
-                return this;
-            }
-
-            public IStateBuilder WithMachines(params IStateMachine[] machines)
-            {
-                _machines.AddRange(machines);
-                return this;
-            }
+            Name = name.Reduce(Guid.NewGuid().ToString());
+            _updater = updater;
+            _subStateMachines = subStateMachines;
         }
 
-        #endregion
-        
-        #region Builders
-        
-        public static IStateNamesBuilders Builders() => new StateBuilders();
+        ~State() => Dispose(false);
 
-        public interface IStateNamesBuilders
+        public string Name { get; }
+
+        private readonly StateUpdater _updater;
+        private readonly SubStateMachines _subStateMachines;
+        
+        public void StateEnter()
         {
-            IStateBuilders WithNames(params string[] name);
-            IStateBuilders WithNames<TEnum>();
+            _updater.Enter();
+            _subStateMachines.StartMachine();
         }
 
-        public interface IStateBuilders
+        public void StateUpdate()
         {
-            IState[] Build();
+            _updater.Update();
         }
         
-        private class StateBuilders : IStateNamesBuilders, IStateBuilders
+        public void StateExit()
         {
-            private string[] _names;
-
-            public IState[] Build()
-            {
-                var states = new List<IState>();
-                foreach (var n in _names)
-                {
-                    var name = n.ToOption();
-                    var updater = new StateUpdater();
-                    var machines = new SubStateMachines();
-                    states.Add(new State(name, updater, machines));
-                }
-
-                return states.ToArray();
-            }
-            
-            public IStateBuilders WithNames(params string[] names)
-            {
-                _names = names;
-                return this;
-            }
-
-            public IStateBuilders WithNames<TEnum>() =>
-                WithNames(Enum.GetNames(typeof(TEnum)));
+            _updater.Exit();
+            _subStateMachines.StopMachine();
         }
 
-        #endregion
+        public IState InjectSubStateMachine(IStateMachine stateMachine)
+        {
+            _subStateMachines.InjectSubMachine(stateMachine);
+            return this;
+        }
+
+        public IState RemoveSubStateMachine(IStateMachine stateMachine)
+        {
+            _subStateMachines.RemoveSubMachine(stateMachine);
+            return this;
+        }
+
+        public IState InjectActions(Action enter = null, Action update = null, Action exit = null)
+        {
+            _updater.InjectActions(enter, update, exit);
+            return this;
+        }
+
+        public IState RemoveActions(Action enter = null, Action update = null, Action exit = null)
+        {
+            _updater.RemoveActions(enter, update, exit);
+            return this;
+        }
+
+        public bool CompareTo(IAnyState other) =>
+            other is not null && ReferenceEquals(this, other) && Name == other.Name;
     }
 }
