@@ -1,13 +1,18 @@
 {
   "name": "com.aceland.states",
-  "displayName": "AceLand States",
   "version": "1.0.0",
+  "displayName": "AceLand States",
+  "description": "AceLand States is state machine framework designed for Unity.",
+  "unity": "2022.3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/parsue/com.aceland.states.git"
+  },
   "author": {
     "name": "Parsue - AceLand Workshop",
+    "email": "parsue@gmail.com",
     "url": "http://www.parsue.io/"
   },
-  "unity": "2022.3",
-  "description": "AceLand State Machine is a local supporting services dependency",
   "keywords": [
     "aceland",
     "state machine",
@@ -18,5 +23,10 @@
     "com.aceland.library": "1.0.0",
     "com.aceland.playerloophack": "1.0.0",
     "com.aceland.taskutils": "1.0.0"
-  }
+  },
+  "publishConfig": {
+    "registry": "https://package.openupm.com"
+  },
+  "documentationUrl": "",
+  "type": "framework"
 }
