@@ -8,8 +8,8 @@ namespace AceLand.States
 {
     public partial class StateMachine
     {
-        public static Promise<IStateMachine> Get(string id) => GetStateMachine(id);
-        public static Promise<IStateMachine> Get<T>(T id) where T : Enum => GetStateMachine(id.ToString());
+        public static Task<IStateMachine> Get(string id) => GetStateMachine(id);
+        public static Task<IStateMachine> Get<T>(T id) where T : Enum => GetStateMachine(id.ToString());
 
         private static async Task<IStateMachine> GetStateMachine(string id)
         {

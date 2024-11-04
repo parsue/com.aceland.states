@@ -20,7 +20,7 @@ namespace AceLand.States.Core
         }
         
         private static StatesSettings _settings;
-        private static bool PrintLogging => Settings.PrintLogging();
+        private static bool PrintLogging => Settings.PrintLogging;
         
         public static IAnyState AnyState;
         public static IAnyState EntryState;
@@ -94,7 +94,7 @@ namespace AceLand.States.Core
             var fromName = GetStateName(current);
             var toName = GetStateName(next);
 
-            if (!Settings.PrintLogging()) return;
+            if (!Settings.PrintLogging) return;
             var msg = $"[{machine.Id}] State Transition{(isAny ? " [Any]" : "")} : {fromName} >> {toName}";
             Debug.Log(msg);
         }

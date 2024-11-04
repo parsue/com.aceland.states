@@ -20,9 +20,6 @@ namespace AceLand.States.ProjectSetting
         public float GetterTimeout => getterTimeout;
         public bool InvokeEnterOnLateInject => invokeEnterOnLateInject;
         
-        public bool PrintLogging()
-        {
-            return loggingLevel.IsAcceptedLevel();
-        }
+        public bool PrintLogging => loggingLevel.IsAcceptedLevel();
     }
 }

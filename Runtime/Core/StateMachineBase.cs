@@ -44,7 +44,7 @@ namespace AceLand.States.Core
         public IAnyState CurrentState { get; private set; }
         
         private protected static StatesSettings Settings => StatesUtils.Settings;
-        private static bool PrintLogging => Settings.PrintLogging();
+        private static bool PrintLogging => Settings.PrintLogging;
 
         private IState[] States { get; }
         private readonly List<StateTransition> _anyTransitions = new();
