@@ -24,18 +24,19 @@ namespace AceLand.States
         public void StateEnter()
         {
             _updater.Enter();
-            _subStateMachines.StartMachine();
+            _subStateMachines.Start();
         }
 
         public void StateUpdate()
         {
             _updater.Update();
+            _subStateMachines.Update();
         }
         
         public void StateExit()
         {
             _updater.Exit();
-            _subStateMachines.StopMachine();
+            _subStateMachines.Stop();
         }
 
         public IState InjectSubStateMachine(IStateMachine stateMachine)

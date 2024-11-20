@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 
 namespace AceLand.States.Core
 {
@@ -18,14 +17,14 @@ namespace AceLand.States.Core
         private readonly Func<bool> _argument;
         private readonly bool _preventToSelf;
 
-        internal bool IsNextState(IAnyState currentState, out IAnyState nextAnyState)
+        internal bool IsNextState(IAnyState currentState, out IAnyState nextState)
         {
-            nextAnyState = null;
+            nextState = null;
             if (_from != StatesUtils.AnyState && !currentState.CompareTo(_from)) return false;
             if (_preventToSelf && currentState.CompareTo(_to)) return false;
             if (!_argument.Invoke()) return false;
             
-            nextAnyState = _to;
+            nextState = _to;
             return true;
         }
 

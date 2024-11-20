@@ -10,7 +10,7 @@ namespace AceLand.States.Core
         private readonly List<IStateMachine> _machines = new();
         private bool _isEntered;
 
-        public void StartMachine()
+        public void Start()
         {
             foreach (var machine in _machines)
                 machine?.Start();
@@ -18,7 +18,13 @@ namespace AceLand.States.Core
             _isEntered = true;
         }
 
-        public void StopMachine()
+        public void Update()
+        {
+            foreach (var machine in _machines)
+                machine?.Update();
+        }
+
+        public void Stop()
         {
             foreach (var machine in _machines)
                 machine?.Stop();

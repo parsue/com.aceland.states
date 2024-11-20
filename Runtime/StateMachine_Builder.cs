@@ -29,7 +29,7 @@ namespace AceLand.States
             IStateMachineBuilder WithId(string id);
             IStateMachineBuilder WithId<T>(T id) where T : Enum;
             IStateMachine Build();
-            IStateMachine BuildAsSystem(PlayerLoopType playerLoopType, int index = 0);
+            IStateMachine BuildAsSystem(PlayerLoopState playerLoopState, int index = 0);
         }
 
         private class StateMachineBuilder : IStatesBuilder, IEntryTransitionBuilder, IStateMachineBuilder
@@ -43,8 +43,8 @@ namespace AceLand.States
             public IStateMachine Build() => 
                 new StateMachine(_id.ToOption(), _states, _firstState, _anyTransitions, _transitions);
             
-            public IStateMachine BuildAsSystem(PlayerLoopType playerLoopType, int index = 0) =>
-                new StateMachineSystem(_id.ToOption(), _states, _firstState, _anyTransitions, _transitions, playerLoopType, index);
+            public IStateMachine BuildAsSystem(PlayerLoopState playerLoopState, int index = 0) =>
+                new StateMachineSystem(_id.ToOption(), _states, _firstState, _anyTransitions, _transitions, playerLoopState, index);
 
             public IEntryTransitionBuilder WithStates(IState[] states)
             {

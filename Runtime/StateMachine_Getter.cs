@@ -8,8 +8,13 @@ namespace AceLand.States
 {
     public partial class StateMachine
     {
-        public static Task<IStateMachine> Get(string id) => GetStateMachine(id);
-        public static Task<IStateMachine> Get<T>(T id) where T : Enum => GetStateMachine(id.ToString());
+        public static Task<IStateMachine> GetAsync(string id) => GetStateMachine(id);
+        public static Task<IStateMachine> GetAsync<TEnum>(TEnum id) where TEnum : Enum => GetStateMachine(id.ToString());
+
+        public static IStateMachine Get(string id) =>
+            StateMachines.TryGetMachine(id, out var stateMachine) ? stateMachine : null;
+        public static IStateMachine Get<TEnum>(TEnum id) =>
+            Get(id.ToString());
 
         private static async Task<IStateMachine> GetStateMachine(string id)
         {

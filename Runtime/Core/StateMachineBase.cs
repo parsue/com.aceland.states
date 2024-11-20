@@ -81,7 +81,7 @@ namespace AceLand.States.Core
         public IState GetState(string stateName) => GetStateByName(stateName);
         public IState GetState<T>(T stateName) where T : Enum => GetStateByName(stateName.ToString());
 
-        private void StateTransition()
+        private protected void StateTransition()
         {
             if (!this.IsStateTransition(_anyTransitions, _transitions,
                     out var nextState, out var isAny))
@@ -94,7 +94,7 @@ namespace AceLand.States.Core
             CurrentState.StateEnter();
         }
 
-        private void StateUpdate()
+        private protected void StateUpdate()
         {
             CurrentState.StateUpdate();
         }

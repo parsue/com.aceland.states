@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using AceLand.Library.Extensions;
 using AceLand.States.ProjectSetting;
@@ -20,7 +19,6 @@ namespace AceLand.States.Core
         }
         
         private static StatesSettings _settings;
-        private static bool PrintLogging => Settings.PrintLogging;
         
         public static IAnyState AnyState;
         public static IAnyState EntryState;
@@ -34,30 +32,6 @@ namespace AceLand.States.Core
         public static StateTransition CreateTransition(IAnyState fromState, IAnyState toState, Func<bool> argument, bool preventToSelf = true)
         {
             return new StateTransition(fromState, toState, argument, preventToSelf);
-        }
-
-        public static bool IsStateTransition(this IStateMachine machine,
-            IEnumerable<StateTransition> anyTransitions, IEnumerable<StateTransition> transitions,
-            out IAnyState nextState, out bool isAny)
-        {
-            var currentState = machine.CurrentState;
-            foreach (var transition in anyTransitions)
-            {
-                if (!transition.IsNextState(currentState, out nextState)) continue;
-                isAny = true;
-                return true;
-            }
-
-            foreach (var transition in transitions)
-            {
-                if (!transition.IsNextState(currentState, out nextState)) continue;
-                isAny = false;
-                return true;
-            }
-
-            nextState = null;
-            isAny = false;
-            return false;
         }
 
         public static Func<bool> GetArgument(string funcName, ReadOnlySpan<MethodInfo> argMethodInfo)
@@ -78,28 +52,7 @@ namespace AceLand.States.Core
             throw new Exception($"Get Argument error: [{funcName}] is not found");
         }
 
-        public static void PrintEntryState(this IStateMachine machine)
-        {
-            var entry = machine.EntryState;
-            
-            if (PrintLogging && !entry.Name.IsNullOrEmptyOrWhiteSpace())
-                Debug.Log($"[{machine.Id}] State Entry : {entry.Name}");
-        }
-
-        public static void PrintStateTransitionLog(this IStateMachine machine, IAnyState next, bool isAny)
-        {
-            var current = machine.CurrentState;
-            if (!PrintLogging || current.Name.IsNullOrEmptyOrWhiteSpace()) return;
-            
-            var fromName = GetStateName(current);
-            var toName = GetStateName(next);
-
-            if (!Settings.PrintLogging) return;
-            var msg = $"[{machine.Id}] State Transition{(isAny ? " [Any]" : "")} : {fromName} >> {toName}";
-            Debug.Log(msg);
-        }
-
-        private static string GetStateName(IAnyState state)
+        public static string GetStateName(IAnyState state)
         {
             return (state is IIdleState) switch
             {
@@ -110,6 +63,5 @@ namespace AceLand.States.Core
                 _ => state.Name,
             };
         }
-        
     }
 }
