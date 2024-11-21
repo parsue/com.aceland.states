@@ -1,6 +1,6 @@
 {
   "name": "com.aceland.states",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "displayName": "AceLand States",
   "description": "AceLand States is state machine framework designed for Unity.",
   "unity": "2022.3",
@@ -20,9 +20,9 @@
     "transition"
   ],
   "dependencies": {
-    "com.aceland.library": "1.0.2",
-    "com.aceland.playerloophack": "1.0.2",
-    "com.aceland.taskutils": "1.0.2"
+    "com.aceland.library": "1.0.3",
+    "com.aceland.playerloophack": "1.0.3",
+    "com.aceland.taskutils": "1.0.3"
   },
   "publishConfig": {
     "registry": "https://package.openupm.com"
