@@ -1,14 +1,13 @@
-﻿using AceLand.Library.Editor;
+﻿using AceLand.Library.Editor.Providers;
 using AceLand.States.ProjectSetting;
 using UnityEditor;
 using UnityEngine.UIElements;
 
 namespace AceLand.States.Editor.ProjectSettingsProvider
 {
-    public class StatesSettingsProvider : SettingsProvider
+    public class StatesSettingsProvider : AceLandSettingsProvider
     {
         public const string SETTINGS_NAME = "Project/AceLand States";
-        private SerializedObject _settings;
         
         private StatesSettingsProvider(string path, SettingsScope scope = SettingsScope.User) 
             : base(path, scope) { }
@@ -18,7 +17,7 @@ namespace AceLand.States.Editor.ProjectSettingsProvider
         
         public override void OnActivate(string searchContext, VisualElement rootElement)
         {
-            _settings = StatesSettings.GetSerializedSettings();
+            Settings = StatesSettings.GetSerializedSettings();
         }
 
         [SettingsProvider]
@@ -26,11 +25,6 @@ namespace AceLand.States.Editor.ProjectSettingsProvider
         {
             var provider = new StatesSettingsProvider(SETTINGS_NAME, SettingsScope.Project);
             return provider;
-        }
-
-        public override void OnGUI(string searchContext)
-        {
-            EditorHelper.DrawAllProperties(_settings);
         }
     }
 }
