@@ -87,16 +87,16 @@ namespace AceLand.States.Core
                     out var nextState, out var isAny))
                 return;
             
-            CurrentState.StateExit();
+            CurrentState?.StateExit();
             this.PrintStateTransitionLog(nextState, isAny);
             
             CurrentState = nextState;
-            CurrentState.StateEnter();
+            CurrentState?.StateEnter();
         }
 
         private protected void StateUpdate()
         {
-            CurrentState.StateUpdate();
+            CurrentState?.StateUpdate();
         }
 
         private void ToEntryState()

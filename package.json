@@ -1,6 +1,6 @@
 {
   "name": "com.aceland.states",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "displayName": "AceLand States",
   "description": "AceLand States is state machine framework designed for Unity.\n\nPlease visit our [Git Book](https://aceland-workshop.gitbook.io/aceland-unity-packages).",
   "unity": "2022.3",
