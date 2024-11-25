@@ -3,7 +3,7 @@ using AceLand.States.Core;
 
 namespace AceLand.States
 {
-    public interface IAnyStateMachine
+    public interface IAnyStateMachine : IComparable, IComparable<IAnyStateMachine>, IEquatable<IAnyStateMachine>
     {
         string Id { get; }
         IAnyState EntryState { get; }

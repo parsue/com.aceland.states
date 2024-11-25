@@ -6,9 +6,11 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [1.0.5] - 2024-11-25
+## [1.0.6] - 2024-11-25
 
-Fixed Null Exception on disposing State Machine.
+### Fixed
+- Null Exception on disposing State Machine.
+- State Machine register comparer issue, always node exists or no error on exists.
 
 ## [1.0.4] - 2024-11-24
 

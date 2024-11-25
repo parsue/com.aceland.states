@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace AceLand.States.Core
 {
-    public abstract class StateMachineBase : DisposableObject, IStateMachine
+    public abstract partial class StateMachineBase : DisposableObject, IStateMachine
     {
         private protected StateMachineBase(Option<string> id, IState[] states, IAnyState firstState,
             List<StateTransition> anyTransitions, List<StateTransition> transitions)
