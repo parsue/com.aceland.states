@@ -1,6 +1,6 @@
 {
   "name": "com.aceland.states",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "displayName": "AceLand States",
   "description": "AceLand States is state machine framework designed for Unity.\n\nPlease visit our [Git Book](https://aceland-workshop.gitbook.io/aceland-unity-packages).",
   "unity": "2022.3",
@@ -20,7 +20,7 @@
     "transition"
   ],
   "dependencies": {
-    "com.aceland.library": "1.0.4",
+    "com.aceland.library": "1.0.5",
     "com.aceland.playerloophack": "1.0.4",
     "com.aceland.taskutils": "1.0.4"
   },
