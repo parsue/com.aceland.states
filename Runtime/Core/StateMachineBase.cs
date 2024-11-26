@@ -72,8 +72,6 @@ namespace AceLand.States.Core
         
         public virtual void Update()
         {
-            if (Disposed || !IsActive) return;
-            
             StateTransition();
             StateUpdate();
         }

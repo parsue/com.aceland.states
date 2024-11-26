@@ -46,7 +46,7 @@ namespace AceLand.States
 
         public override void Stop()
         {
-            if (!IsActive) return;
+            if (Disposed || !IsActive) return;
             
             base.Stop();
             _playerLoopSystem.RemoveSystem(_playerLoopState);
@@ -55,6 +55,8 @@ namespace AceLand.States
 
         public void SystemUpdate()
         {
+            if (Disposed || !IsActive) return;
+            
             StateTransition();
             StateUpdate();
         }

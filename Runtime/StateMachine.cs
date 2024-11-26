@@ -20,9 +20,16 @@ namespace AceLand.States
 
         public override void Stop()
         {
-            if (!IsActive) return;
+            if (Disposed || !IsActive) return;
             
             base.Stop();
+        }
+
+        public override void Update()
+        {
+            if (Disposed || !IsActive) return;
+
+            base.Update();
         }
     }
 }
