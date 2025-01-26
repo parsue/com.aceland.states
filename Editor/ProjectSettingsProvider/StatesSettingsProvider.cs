@@ -7,7 +7,7 @@ namespace AceLand.States.Editor.ProjectSettingsProvider
 {
     public class StatesSettingsProvider : AceLandSettingsProvider
     {
-        public const string SETTINGS_NAME = "Project/AceLand States";
+        public const string SETTINGS_NAME = "Project/AceLand Packages/States";
         
         private StatesSettingsProvider(string path, SettingsScope scope = SettingsScope.User) 
             : base(path, scope) { }
