@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AceLand.Library.Disposable;
 using AceLand.Library.Extensions;
 using AceLand.Library.Optional;
+using AceLand.States.Exceptions;
 using AceLand.States.ProjectSetting;
 using UnityEngine;
 
@@ -125,7 +126,7 @@ namespace AceLand.States.Core
                 return state;
             }
 
-            throw new Exception($"Get State Error: name [{name}] not found");
+            throw new StateNotFoundException($"Get State Error: name [{name}] not found");
         }
     }
 }

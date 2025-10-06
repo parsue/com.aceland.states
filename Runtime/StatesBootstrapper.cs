@@ -11,6 +11,10 @@ namespace AceLand.States
             StatesUtils.AnyState = AnyState.Builder().WithName("Any State").Build();
             StatesUtils.EntryState = AnyState.Builder().WithName("Entry State").Build();
             StatesUtils.ExitState = AnyState.Builder().WithName("Exit State").Build();
+
+            var settings = StatesUtils.Settings;
+            foreach (var provider in settings.PrewarmProviders)
+                provider.PrewarmStateMachine();
         }
     }
 }

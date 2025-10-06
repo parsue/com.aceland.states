@@ -1,5 +1,7 @@
-﻿using AceLand.Library.BuildLeveling;
+﻿using System;
+using AceLand.Library.BuildLeveling;
 using AceLand.Library.ProjectSetting;
+using AceLand.States.Profiles;
 using UnityEngine;
 
 namespace AceLand.States.ProjectSetting
@@ -14,10 +16,14 @@ namespace AceLand.States.ProjectSetting
         
         [Header("Logging")]
         [SerializeField] private BuildLevel loggingLevel = BuildLevel.Development;
+        
+        [Header("Providers")]
+        [SerializeField] private StateMachinePrewarmProvider[] prewarmProviders =
+                Array.Empty<StateMachinePrewarmProvider>();  
 
         public float GetterTimeout => getterTimeout;
         public bool InvokeEnterOnLateInject => invokeEnterOnLateInject;
-        
         public bool PrintLogging => loggingLevel.IsAcceptedLevel();
+        public ReadOnlySpan<StateMachinePrewarmProvider> PrewarmProviders => prewarmProviders;
     }
 }
