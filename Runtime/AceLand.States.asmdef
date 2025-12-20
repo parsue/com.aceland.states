@@ -2,9 +2,10 @@
     "name": "AceLand.States",
     "rootNamespace": "AceLand.States",
     "references": [
-        "GUID:0b6e3ff925df76b408774ed4b623807b",
         "GUID:1a972ba99344f904a9d50dc99b31faba",
-        "GUID:f6e29fd4e9e98494f91cfd818cc81d32"
+        "GUID:f6e29fd4e9e98494f91cfd818cc81d32",
+        "GUID:a3501a4e96610ae4591d3fd42c9f67ed",
+        "GUID:03d7f3b5b2cdbe14dad3ef6460233f6b"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

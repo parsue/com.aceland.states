@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using AceLand.Library.Extensions;
 using AceLand.States.ProjectSetting;
 using UnityEngine;
 
@@ -36,7 +35,7 @@ namespace AceLand.States.Core
 
         public static Func<bool> GetArgument(string funcName, ReadOnlySpan<MethodInfo> argMethodInfo)
         {
-            if (funcName.IsNullOrEmptyOrWhiteSpace()) return null;
+            if (string.IsNullOrEmpty(funcName)) return null;
             if (argMethodInfo.Length == 0) return null;
             
             foreach (var info in argMethodInfo)

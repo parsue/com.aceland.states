@@ -1,5 +1,4 @@
-﻿using AceLand.Library.Extensions;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace AceLand.States.Core
 {
@@ -11,14 +10,14 @@ namespace AceLand.States.Core
         {
             var entry = machine.EntryState;
             
-            if (PrintLogging && !entry.Name.IsNullOrEmptyOrWhiteSpace())
+            if (PrintLogging && !string.IsNullOrEmpty(entry.Name))
                 Debug.Log($"[{machine.Id}] State Entry : {entry.Name}");
         }
 
         public static void PrintStateTransitionLog(this IStateMachine machine, IAnyState next, bool isAny)
         {
             var current = machine.CurrentState;
-            if (!PrintLogging || current.Name.IsNullOrEmptyOrWhiteSpace()) return;
+            if (!PrintLogging || string.IsNullOrEmpty(current.Name)) return;
             
             var fromName = StatesUtils.GetStateName(current);
             var toName = StatesUtils.GetStateName(next);

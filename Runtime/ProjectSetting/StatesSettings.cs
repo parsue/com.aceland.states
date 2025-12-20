@@ -1,6 +1,5 @@
 ﻿using System;
-using AceLand.Library.BuildLeveling;
-using AceLand.Library.ProjectSetting;
+using AceLand.ProjectSetting;
 using AceLand.States.Profiles;
 using UnityEngine;
 

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using AceLand.Library.Disposable;
-using AceLand.Library.Extensions;
-using AceLand.Library.Optional;
+using AceLand.Optional;
 using AceLand.States.Exceptions;
 using AceLand.States.ProjectSetting;
 using UnityEngine;
@@ -32,7 +30,7 @@ namespace AceLand.States.Core
 
         protected override void DisposeManagedResources()
         {
-            if (!Id.IsNullOrEmptyOrWhiteSpace()) this.UnRegister();
+            if (!string.IsNullOrEmpty(Id)) this.UnRegister();
             CurrentState = null;
             _transitions.Clear();
         }

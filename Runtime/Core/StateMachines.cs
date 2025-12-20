@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using AceLand.Library.Extensions;
 using AceLand.States.ProjectSetting;
 
 namespace AceLand.States.Core
@@ -30,7 +29,7 @@ namespace AceLand.States.Core
         internal static void UnRegister(this IAnyStateMachine machine)
         {
             var id = machine.Id;
-            if (id.IsNullOrEmptyOrWhiteSpace()) return;
+            if (string.IsNullOrEmpty(id)) return;
             if (!Machines.ContainsKey(id)) return;
             
             Machines.Remove(id);

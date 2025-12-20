@@ -2,9 +2,9 @@
     "name": "AceLand.States.Editor",
     "rootNamespace": "AceLand.States",
     "references": [
-        "GUID:0b6e3ff925df76b408774ed4b623807b",
         "GUID:defe9ec8a462b9845bab2282a466871d",
-        "GUID:9811992f43a01034cbf814ec6fbeeb44"
+        "GUID:03d7f3b5b2cdbe14dad3ef6460233f6b",
+        "GUID:a9e09994eea96e5439279dbe3783eacc"
     ],
     "includePlatforms": [
         "Editor"
