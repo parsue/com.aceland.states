@@ -1,41 +1,38 @@
 ﻿using System.Collections.Generic;
+using AceLand.Lifecycle;
 using AceLand.Optional;
-using AceLand.PlayerLoopHack;
 using AceLand.States.Core;
-using AceLand.TaskUtils;
-using UnityEngine.LowLevel;
 
 namespace AceLand.States
 {
-    public sealed class StateMachineSystem : StateMachine, IPlayerLoopSystem
+    [QuitOrder(-100)]
+    public sealed class StateMachineSystem : StateMachine
     {
         internal StateMachineSystem(Option<string> id, IState[] states, IAnyState firstState,
             List<StateTransition> anyTransitions, List<StateTransition> transitions,
-            PlayerLoopState playerLoopState, int index) :
+            PlayerLoopPoint playerLoopPoint) :
             base(id, states, firstState, anyTransitions, transitions)
         {
-            _playerLoopState = playerLoopState;
-            _index = index;
-            _playerLoopSystem = this.CreatePlayerLoopSystem();
+            _playerLoopPoint = playerLoopPoint;
         }
 
-        protected override void DisposeManagedResources()
+        public override void Dispose()
         {
-            base.DisposeManagedResources();
+            base.Dispose();
             Stop();
         }
 
-        private readonly PlayerLoopSystem _playerLoopSystem;
-        private readonly PlayerLoopState _playerLoopState;
-        private readonly int _index;
+        private readonly PlayerLoopPoint _playerLoopPoint;
+        private IFrameHandle _systemHandle;
 
         public override IStateMachine Start()
         {
             if (IsActive) return this;
 
             base.Start();
-            _playerLoopSystem.InjectSystem(_playerLoopState, _index);
-            Promise.AddApplicationQuitListener(Stop);
+            
+            _systemHandle = LifecycleFrame.RunEveryFrame(Update, _playerLoopPoint);
+            
             return this;
         }
 
@@ -49,8 +46,8 @@ namespace AceLand.States
             if (Disposed || !IsActive) return;
             
             base.Stop();
-            _playerLoopSystem.RemoveSystem(_playerLoopState);
-            Promise.RemoveApplicationQuitListener(Stop);
+            
+            _systemHandle?.Dispose();
         }
 
         public void SystemUpdate()

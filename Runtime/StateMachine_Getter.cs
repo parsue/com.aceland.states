@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AceLand.Lifecycle;
 using AceLand.States.Core;
 using AceLand.States.Exceptions;
-using AceLand.TaskUtils;
 using UnityEngine;
 
 namespace AceLand.States
 {
     public partial class StateMachine
     {
-        public static Promise<IStateMachine> GetAsync(string id) => GetStateMachineAsync(id);
-        public static Promise<IStateMachine> GetAsync<TEnum>(TEnum id) where TEnum : Enum => GetStateMachineAsync(id.ToString());
+        public static Task<IStateMachine> GetAsync(string id) => GetStateMachineAsync(id);
+        public static Task<IStateMachine> GetAsync<TEnum>(TEnum id) where TEnum : Enum => GetStateMachineAsync(id.ToString());
 
         public static IStateMachine Get(string id) =>
             StateMachines.TryGetMachine(id, out var stateMachine) ? stateMachine : null;
@@ -19,16 +19,15 @@ namespace AceLand.States
 
         private static async Task<IStateMachine> GetStateMachineAsync(string id)
         {
-            var aliveToken = Promise.ApplicationAliveToken;
+            var aliveToken = LifecycleToken.ApplicationAlive;
             var targetTime = Time.realtimeSinceStartup + Settings.GetterTimeout;
 
             while (!aliveToken.IsCancellationRequested && Time.realtimeSinceStartup < targetTime)
             {
+                if (StateMachines.TryGetMachine(id, out var stateMachine))
+                    return stateMachine;
+                
                 await Task.Yield();
-                
-                var arg = StateMachines.TryGetMachine(id, out var stateMachine);
-                
-                if (arg) return stateMachine;
             }
 
             throw new StateMachineNotFoundException($"State Machine [{id}] is not found");

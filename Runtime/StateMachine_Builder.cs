@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using AceLand.Lifecycle;
 using AceLand.Optional;
-using AceLand.PlayerLoopHack;
 using AceLand.States.Core;
 
 namespace AceLand.States
@@ -29,7 +29,7 @@ namespace AceLand.States
             IStateMachineBuilder WithId(string id);
             IStateMachineBuilder WithId<T>(T id) where T : Enum;
             IStateMachine Build();
-            IStateMachine BuildAsSystem(PlayerLoopState playerLoopState, int index = 0);
+            IStateMachine BuildAsSystem(PlayerLoopPoint playerLoopPoint);
         }
 
         private class StateMachineBuilder : IStatesBuilder, IEntryTransitionBuilder, IStateMachineBuilder
@@ -42,9 +42,9 @@ namespace AceLand.States
 
             public IStateMachine Build() => 
                 new StateMachine(_id.ToOption(), _states, _firstState, _anyTransitions, _transitions);
-            
-            public IStateMachine BuildAsSystem(PlayerLoopState playerLoopState, int index = 0) =>
-                new StateMachineSystem(_id.ToOption(), _states, _firstState, _anyTransitions, _transitions, playerLoopState, index);
+
+            public IStateMachine BuildAsSystem(PlayerLoopPoint playerLoopPoint) =>
+                new StateMachineSystem(_id.ToOption(), _states, _firstState, _anyTransitions, _transitions, playerLoopPoint);
 
             public IEntryTransitionBuilder WithStates(IState[] states)
             {

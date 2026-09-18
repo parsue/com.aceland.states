@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [3.0.0] - 2026-9-18
+- Ready for CoreCLR, auto clearup static values
+- [Dependency] use Lifecycle runtime, remove disposable, PlayerLoopHack and TaskUtils
+
+---
+
 ## [2.2.1] - 2025-12-21
 ### Modified
 - Dependency

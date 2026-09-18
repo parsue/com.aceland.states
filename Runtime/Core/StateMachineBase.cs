@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace AceLand.States.Core
 {
-    public abstract partial class StateMachineBase : DisposableObject, IStateMachine
+    public abstract partial class StateMachineBase : IStateMachine
     {
         private protected StateMachineBase(Option<string> id, IState[] states, IAnyState firstState,
             List<StateTransition> anyTransitions, List<StateTransition> transitions)
@@ -27,17 +27,21 @@ namespace AceLand.States.Core
             this.Register();
         }
 
-        ~StateMachineBase() => Dispose(false);
+        ~StateMachineBase() => Dispose();
 
-        protected override void DisposeManagedResources()
+        public virtual void Dispose()
         {
+            if (Disposed) return;
             if (!string.IsNullOrEmpty(Id)) this.UnRegister();
+            
             CurrentState = null;
             _transitions.Clear();
+            Disposed = true;
         }
         
         public string Id { get; }
         public bool IsActive { get; private set; }
+        public bool Disposed { get; private set; }
         public IAnyState EntryState { get; }
         public IAnyState ExitState { get; }
         public IAnyState StartState { get; }
