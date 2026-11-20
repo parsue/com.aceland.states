@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using AceLand.Optional;
+﻿#nullable enable
+using System.Collections.Generic;
 using AceLand.States.Core;
 
 namespace AceLand.States
 {
     public partial class StateMachine : StateMachineBase
     {
-        private protected StateMachine(Option<string> id, IState[] states, IAnyState firstState,
+        private protected StateMachine(string? id, IState[] states, IAnyState firstState,
             List<StateTransition> anyTransitions, List<StateTransition> transitions) :
             base(id, states, firstState, anyTransitions, transitions) { }
         

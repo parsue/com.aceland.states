@@ -1,5 +1,4 @@
 ﻿using System;
-using AceLand.Optional;
 
 namespace AceLand.States.Core
 {
@@ -22,16 +21,16 @@ namespace AceLand.States.Core
         
         private class StateBuilder : IStateBuilder
         {
-            private Option<string> _name = Option<string>.None();
+            private string _name;
             public IAnyState Build()
             {
-                var name = _name.Reduce(Guid.NewGuid().ToString());
+                var name = _name ?? Guid.NewGuid().ToString();
                 return new AnyState(name);
             }
             
             public IStateBuilder WithName(string name)
             {
-                _name = name.ToOption();
+                _name = name;
                 return this;
             }
         }

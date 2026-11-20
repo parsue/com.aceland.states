@@ -1,20 +1,17 @@
-﻿using AceLand.Optional;
+﻿#nullable enable
 using System;
-using AceLand.Disposable;
 using AceLand.States.Core;
 
 namespace AceLand.States
 {
-    public sealed partial class State : DisposableObject, IState
+    public sealed partial class State :IState
     {
-        private State(Option<string> name, StateUpdater updater, SubStateMachines subStateMachines)
+        private State(string? name, StateUpdater updater, SubStateMachines subStateMachines)
         {
-            Name = name.Reduce(Guid.NewGuid().ToString());
+            Name = name ?? Guid.NewGuid().ToString();
             _updater = updater;
             _subStateMachines = subStateMachines;
         }
-
-        ~State() => Dispose(false);
 
         public string Name { get; }
 

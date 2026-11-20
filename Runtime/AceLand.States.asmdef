@@ -3,8 +3,6 @@
     "rootNamespace": "AceLand.States",
     "references": [
         "GUID:6f935f44cf956b548a225b524caea96c",
-        "GUID:9599c860e93b7ae4e85de39489f649cf",
-        "GUID:a3501a4e96610ae4591d3fd42c9f67ed",
         "GUID:03d7f3b5b2cdbe14dad3ef6460233f6b"
     ],
     "includePlatforms": [],

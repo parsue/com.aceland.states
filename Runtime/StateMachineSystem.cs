@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+using System.Collections.Generic;
 using AceLand.Lifecycle;
-using AceLand.Optional;
 using AceLand.States.Core;
 
 namespace AceLand.States
@@ -8,7 +8,7 @@ namespace AceLand.States
     [QuitOrder(-100)]
     public sealed class StateMachineSystem : StateMachine
     {
-        internal StateMachineSystem(Option<string> id, IState[] states, IAnyState firstState,
+        internal StateMachineSystem(string? id, IState[] states, IAnyState firstState,
             List<StateTransition> anyTransitions, List<StateTransition> transitions,
             PlayerLoopPoint playerLoopPoint) :
             base(id, states, firstState, anyTransitions, transitions)

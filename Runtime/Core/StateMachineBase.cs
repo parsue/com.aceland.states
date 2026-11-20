@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using AceLand.Disposable;
-using AceLand.Optional;
 using AceLand.States.Exceptions;
 using AceLand.States.ProjectSetting;
 using UnityEngine;
@@ -10,10 +8,10 @@ namespace AceLand.States.Core
 {
     public abstract partial class StateMachineBase : IStateMachine
     {
-        private protected StateMachineBase(Option<string> id, IState[] states, IAnyState firstState,
+        private protected StateMachineBase(string id, IState[] states, IAnyState firstState,
             List<StateTransition> anyTransitions, List<StateTransition> transitions)
         {
-            Id = id.Reduce(Guid.NewGuid().ToString());
+            Id = id ?? Guid.NewGuid().ToString();
             States = states;
             EntryState = StatesUtils.EntryState;
             ExitState = StatesUtils.ExitState;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using AceLand.Optional;
 using AceLand.States.Core;
 
 namespace AceLand.States
@@ -27,9 +26,8 @@ namespace AceLand.States
             public IState[] Build()
             {
                 var states = new List<IState>();
-                foreach (var n in _names)
+                foreach (var name in _names)
                 {
-                    var name = n.ToOption();
                     var updater = new StateUpdater();
                     var machines = new SubStateMachines();
                     states.Add(new State(name, updater, machines));

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using AceLand.Optional;
 using AceLand.States.Core;
 
 namespace AceLand.States
@@ -28,7 +27,7 @@ namespace AceLand.States
             {
                 var updater = new StateUpdater(_actions);
                 var subStateMachines = new SubStateMachines(_machines);
-                return new State(_name.ToOption(), updater, subStateMachines);
+                return new State(_name, updater, subStateMachines);
             }
             
             public IStateBuilder WithName(string name)
