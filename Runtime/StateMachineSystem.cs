@@ -38,7 +38,9 @@ namespace AceLand.States
 
         public override void Update()
         {
-            // Update is replaced by SystemUpdate()
+            if (Disposed || !IsActive) return;
+            
+            base.Update();
         }
 
         public override void Stop()
@@ -48,14 +50,6 @@ namespace AceLand.States
             base.Stop();
             
             _systemHandle?.Dispose();
-        }
-
-        public void SystemUpdate()
-        {
-            if (Disposed || !IsActive) return;
-            
-            StateTransition();
-            StateUpdate();
         }
     }
 }
