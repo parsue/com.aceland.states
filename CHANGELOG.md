@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [3.0.3] - 2026-11-21
+- [Profiler] Added per-state step markers (AceLand.States.State.<StateName>.Enter/Update/Exit)
+- [Profiler] Injected actions now report under their source delegate (AceLand.States.Action.<DeclaringType>.<Method>), linking the measurement back to the user function
+- All markers wrapped with #if ENABLE_PROFILER for zero release cost
+
 ## [3.0.2] - 2026-11-20
 - Fixed update is not work on State Machine as System
 

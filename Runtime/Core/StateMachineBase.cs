@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using AceLand.States.Exceptions;
 using AceLand.States.ProjectSetting;
 using UnityEngine;
+#if ENABLE_PROFILER
+using Unity.Profiling;
+#endif
 
 namespace AceLand.States.Core
 {
@@ -12,6 +15,12 @@ namespace AceLand.States.Core
             List<StateTransition> anyTransitions, List<StateTransition> transitions)
         {
             Id = id ?? Guid.NewGuid().ToString();
+#if ENABLE_PROFILER
+            // Per-machine marker keyed by Id so every state machine shows as a distinct Profiler
+            // node, instead of collapsing under a single Lifecycle Frame call site
+            // (AceLand.Lifecycle.Frame.StateMachineSystem.Start) shared by all machines.
+            _updateMarker = new ProfilerMarker(ProfilerPrefix + Id);
+#endif
             States = states;
             EntryState = StatesUtils.EntryState;
             ExitState = StatesUtils.ExitState;
@@ -51,6 +60,12 @@ namespace AceLand.States.Core
         private IState[] States { get; }
         private readonly List<StateTransition> _anyTransitions = new();
         private readonly List<StateTransition> _transitions = new();
+
+#if ENABLE_PROFILER
+        // Profiler marker name prefix; uses '.' separators (never '/') to form a single Profiler node.
+        private const string ProfilerPrefix = "AceLand.States.Update.";
+        private readonly ProfilerMarker _updateMarker;
+#endif
         
         public virtual IStateMachine Start()
         {
@@ -74,8 +89,13 @@ namespace AceLand.States.Core
         
         public virtual void Update()
         {
-            StateTransition();
-            StateUpdate();
+#if ENABLE_PROFILER
+            using (_updateMarker.Auto())
+#endif
+            {
+                StateTransition();
+                StateUpdate();
+            }
         }
 
         public IState GetState(string stateName) => GetStateByName(stateName);

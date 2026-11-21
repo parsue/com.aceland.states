@@ -1,4 +1,7 @@
 ﻿using System;
+#if ENABLE_PROFILER
+using Unity.Profiling;
+#endif
 
 namespace AceLand.States.Core
 {
@@ -9,27 +12,60 @@ namespace AceLand.States.Core
             _enter = enter;
             _update = update;
             _exit = exit;
+#if ENABLE_PROFILER
+            // Name each injected action's marker after the source delegate (DeclaringType.Method),
+            // so the Profiler links the measurement back to the user function. '.' separators only.
+            _enterMarker = MakeMarker("Enter", enter);
+            _updateMarker = MakeMarker("Update", update);
+            _exitMarker = MakeMarker("Exit", exit);
+#endif
         }
 
         private Action _enter;
         private Action _update;
         private Action _exit;
 
+#if ENABLE_PROFILER
+        private ProfilerMarker _enterMarker;
+        private ProfilerMarker _updateMarker;
+        private ProfilerMarker _exitMarker;
+
+        private static ProfilerMarker MakeMarker(string step, Action action)
+        {
+            var method = action?.Method;
+            var name = method is null
+                ? "AceLand.States.Action.<none>." + step
+                : "AceLand.States.Action." +
+                  (method.DeclaringType?.Name is { Length: > 0 } type ? type + "." : "") +
+                  method.Name;
+            return new ProfilerMarker(name);
+        }
+#endif
+
         internal bool IsEmpty => _enter is null && _update is null && _exit is null;
 
         public void Enter()
         {
-            _enter?.Invoke();
+#if ENABLE_PROFILER
+            using (_enterMarker.Auto())
+#endif
+                _enter?.Invoke();
         }
         
         public void Update()
         {
-            _update?.Invoke();
+#if ENABLE_PROFILER
+            using (_updateMarker.Auto())
+#endif
+                _update?.Invoke();
         }
 
         public void Exit()
         {
-            _exit?.Invoke();
+#if ENABLE_PROFILER
+            using (_exitMarker.Auto())
+#endif
+                _exit?.Invoke();
         }
 
         public void RemoveEnter(Action action)
