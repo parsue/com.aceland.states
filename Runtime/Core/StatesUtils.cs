@@ -1,11 +1,18 @@
 ﻿using System;
 using System.Reflection;
 using AceLand.States.ProjectSetting;
+#if UNITY_6000_5_OR_NEWER
+using Unity.Scripting.LifecycleManagement;
+#endif
 using UnityEngine;
 
 namespace AceLand.States.Core
 {
+#if UNITY_6000_5_OR_NEWER
+    internal static partial class StatesUtils
+#else
     internal static class StatesUtils
+#endif
     {
         public static StatesSettings Settings
         {
@@ -16,13 +23,39 @@ namespace AceLand.States.Core
             }
             internal set => _settings = value;
         }
-        
+
+#if UNITY_6000_5_OR_NEWER
+        [AutoStaticsCleanup]
+#endif
         private static StatesSettings _settings;
-        
+
+#if UNITY_6000_5_OR_NEWER
+        [AutoStaticsCleanup]
+#endif
         public static IAnyState AnyState;
+#if UNITY_6000_5_OR_NEWER
+        [AutoStaticsCleanup]
+#endif
         public static IAnyState EntryState;
+#if UNITY_6000_5_OR_NEWER
+        [AutoStaticsCleanup]
+#endif
         public static IAnyState ExitState;
-        
+
+#if !UNITY_6000_5_OR_NEWER
+        // CoreCLR / no-domain-reload premise: on Unity versions without [AutoStaticsCleanup]
+        // these statics survive between play sessions, so reset them explicitly on
+        // (re)initialization to avoid stale state leaking across sessions.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
+        private static void ClearStatic()
+        {
+            _settings = null;
+            AnyState = null;
+            EntryState = null;
+            ExitState = null;
+        }
+#endif
+
         public static StateAction CreateStateUpdater(Action enter = null, Action update = null, Action exit = null)
         {
             return new StateAction(enter, update, exit);

@@ -34,5 +34,30 @@ namespace AceLand.States.Core
             
             Machines.Remove(id);
         }
+
+#if UNITY_EDITOR
+        /// <summary>
+        /// Editor-only: dispose and clear every registered machine.
+        /// No-domain-reload play mode keeps the static <see cref="Machines"/> dictionary alive
+        /// between play sessions, so it must be cleared on (re)initialization to avoid stale
+        /// machines leaking across sessions. Player builds get a fresh static state per process
+        /// launch, so this is not compiled there.
+        /// </summary>
+        internal static void ClearAll()
+        {
+            if (Machines.Count == 0) return;
+
+            // Snapshot and clear first so Dispose -> UnRegister becomes a no-op
+            // and we avoid mutating the dictionary while iterating.
+            var machines = new List<IAnyStateMachine>(Machines.Values);
+            Machines.Clear();
+
+            foreach (var machine in machines)
+            {
+                if (machine is IStateMachine stateMachine)
+                    stateMachine.Dispose();
+            }
+        }
+#endif
     }
 }

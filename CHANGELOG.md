@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [3.0.4] - 2026-11-26
+- [CoreCLR] Fixed static values not auto-cleared: StatesUtils (_settings, AnyState, EntryState, ExitState) now use [AutoStaticsCleanup] on Unity 6000.5+ and a RuntimeInitializeOnLoadMethod reset on older versions (down to 2023.2)
+- [CoreCLR] StateMachines registry now clears (and disposes) all machines on (re)initialization in Editor play mode, preventing stale machines leaking across no-domain-reload play sessions
+
 ## [3.0.3] - 2026-11-21
 - [Profiler] Added per-state step markers (AceLand.States.State.<StateName>.Enter/Update/Exit)
 - [Profiler] Injected actions now report under their source delegate (AceLand.States.Action.<DeclaringType>.<Method>), linking the measurement back to the user function
